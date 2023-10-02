@@ -28,3 +28,21 @@
  - Se Gestionaran los csv 
 
  - Se hara la seccion de "Descarga tus gastos"
+
+# Informe 06
+
+ - Se tendrá un prototipo de la aplicación con las características esperadas
+
+ - Se mejoraran aspectos
+
+ - Se corregirán los errores encontrados
+
+# Informe 07
+
+
+ - Despliegue de la aplición en la web
+
+ - Corregir errores encontrados en el despliegue
+
+ - Cierre
+
