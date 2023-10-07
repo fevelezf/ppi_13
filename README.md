@@ -19,3 +19,6 @@ Al obtener estos datos, la aplicación tiene la opción de mostrar gráficos don
 
 ## Uso del Aplicativo
 FinanzApp es una aplicación completa que te ayuda a rastrear tus gastos personales y los gastos durante tus paseos. Registra tus ingresos, gastos, deudas y responsabilidades, y ademas puedes realizar seguimiento de tus gastos mientras estás de paseo. Esto te permite tener un control total sobre tus finanzas personales y tus aventuras fuera de casa, proporcionándote una visión clara de tus patrones de gasto y ayudándote a tomar decisiones financieras más informadas para alcanzar tus metas económicas.
+
+## Pagina Web
+https://finanzapp.streamlit.app/
