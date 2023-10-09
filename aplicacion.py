@@ -10,10 +10,30 @@ df = pd.DataFrame(data)
 # Título de la aplicación
 st.title("Seguimiento de Gastos Personales")
 
+# Menú desplegable en la barra lateral
+menu_option = st.sidebar.selectbox("Menú", ["Inicio", "Registro", "Salir"])
+
+# Opciones del menú
+if menu_option == "Inicio":
+    st.write("Bienvenido al inicio de la aplicación.")
+elif menu_option == "Registro":
+    # Agregar Gasto
+    fecha = st.text_input("Ingrese la fecha (YYYY-MM-DD):")
+    categoria = st.text_input("Ingrese la categoría del gasto:")
+    monto = st.number_input("Ingrese el monto del gasto:")
+
+    if st.button("Agregar Gasto"):
+        # Agregar el gasto al DataFrame
+        df.loc[len(df)] = [fecha, categoria, monto]
+        st.success("Gasto agregado exitosamente.")
+elif menu_option == "Salir":
+    st.balloons()
+    st.stop()
+
 # Botón de "Entrar" para acceder a la aplicación
 if st.button("Entrar"):
     # Menú principal
-    opcion = st.selectbox("Seleccione una opción:", ["Agregar Gasto", "Calcular Estadísticas", "Salir"])
+    opcion = st.selectbox("Seleccione una opción:", ["Agregar Gasto", "Calcular Estadísticas"])
 
     if opcion == "Agregar Gasto":
         fecha = st.text_input("Ingrese la fecha (YYYY-MM-DD):")
@@ -49,11 +69,6 @@ if st.button("Entrar"):
         else:
             st.warning("No hay datos de gastos para calcular estadísticas.")
 
-    elif opcion == "Salir":
-        st.balloons()
-        st.stop()
-
 # Guardar los datos en un archivo CSV
 if not df.empty:
     df.to_csv('gastos_personales.csv', index=False)
-
