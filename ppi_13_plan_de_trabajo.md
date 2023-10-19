@@ -17,6 +17,9 @@
 | 2     | Se le empezara a dar funcionalidad a la aplicacion con funciones basicas. | Felipe | Pendiente|
 | 3     | Priorizar el desarrollo de la interfaz gráfica. | Sebastian | Pendiente|
 | 4     | Iniciar las secciones "Inicio" y "Nosotros" en la página web. | Sebastian | Pendiente|
+| 5     | Añadir la Politica de Tratamiento de datos | Sebastian | Pendiente|
+| 6     | Realizar Graficos a partir de datos | Felipe | Pendiente|
+| 7     | Optimizar el Registro de usuarios  | Sebastian | Pendiente|
 
 
 ## Informe 05
