@@ -20,6 +20,7 @@
 | 5     | Añadir la Politica de Tratamiento de datos | Sebastian | Pendiente|
 | 6     | Realizar Graficos a partir de datos | Felipe | Pendiente|
 | 7     | Optimizar el Registro de usuarios  | Sebastian | Pendiente|
+| 8     | Empezar la persistencia de los CSV  | Felipe | Pendiente|
 
 
 ## Informe 05
