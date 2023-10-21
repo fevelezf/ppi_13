@@ -3,9 +3,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from tinydb import TinyDB, Query
 
-# Cargar el archivo CSV con los usuarios
-usuarios_df = pd.read_csv('usuarios.csv')
+# Inicializa la base de datos
+db = TinyDB('usuarios.json')
 
 # Inicializar la variable de sesión para el nombre de usuario
 if 'username' not in st.session_state:
@@ -27,30 +28,23 @@ def get_user_data(username):
 
 # Función para registrar un nuevo usuario
 def registrar_usuario(username, password):
-    global usuarios_df
-
-    # Verificar si el usuario ya existe
-    if username in usuarios_df['Username'].values:
+    User = Query()
+    # Verifica si el usuario ya existe en la base de datos
+    if db.search(User.username == username):
         return False, "El usuario ya existe. Por favor, elija otro nombre de usuario."
 
-    # Agregar el nuevo usuario al DataFrame
-    nuevo_usuario = pd.DataFrame({'Username': [username], 'Password': [password]})
-    usuarios_df = pd.concat([usuarios_df, nuevo_usuario], ignore_index=True)
-
-    # Guardar el DataFrame actualizado en el archivo CSV
-    usuarios_df.to_csv('usuarios.csv', index=False)
+    # Agrega el nuevo usuario a la base de datos
+    db.insert({'username': username, 'password': password})
 
     return True, "Registro exitoso. Ahora puede iniciar sesión."
 
-def verificar_credenciales(username, password):
-    # Lee el archivo CSV de usuarios
-    try:
-        usuarios_df = pd.read_csv('usuarios.csv')
-    except FileNotFoundError:
-        return False, "No se encontraron usuarios registrados."
 
-    # Verifica las credenciales
-    if (usuarios_df['Username'] == username).any() and (usuarios_df['Password'] == password).any():
+# Función para verificar credenciales
+def verificar_credenciales(username, password):
+    User = Query()
+    # Busca el usuario en la base de datos
+    user = db.get((User.username == username) & (User.password == password))
+    if user:
         return True, "Inicio de sesión exitoso."
     else:
         return False, "Credenciales incorrectas. Por favor, verifique su nombre de usuario y contraseña."
