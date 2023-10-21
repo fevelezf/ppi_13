@@ -13,14 +13,14 @@
 ## Informe 04
 |Tarea | Descripción | Responsable | Cumplimiento|
 |-------|-------------|-------------|--------------|
-| 1     | Se empezara a Implementar la página de registro de usuarios y guardar los datos en un archivo CSV. | Felipe | Pendiente|
+| 1     | Se empezara a Implementar la página de registro de usuarios y guardar los datos en un archivo. | Felipe | Pendiente|
 | 2     | Se le empezara a dar funcionalidad a la aplicacion con funciones basicas. | Felipe | Pendiente|
 | 3     | Priorizar el desarrollo de la interfaz gráfica. | Sebastian | Pendiente|
 | 4     | Iniciar las secciones "Inicio" y "Nosotros" en la página web. | Sebastian | Pendiente|
 | 5     | Añadir la Politica de Tratamiento de datos | Sebastian | Pendiente|
 | 6     | Realizar Graficos a partir de datos | Felipe | Pendiente|
 | 7     | Optimizar el Registro de usuarios  | Sebastian | Pendiente|
-| 8     | Empezar la persistencia de los CSV  | Felipe | Pendiente|
+| 8     | Empezar la persistencia de los datos | Felipe | Pendiente|
 
 
 ## Informe 05
