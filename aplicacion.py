@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 import os
 from tinydb import TinyDB, Query
 
-# Inicializa la base de datos
-db = TinyDB('usuarios.json')
+# Inicializa la base de datos para usuarios y gastos e ingresos
+db_users = TinyDB('usuarios.json')
+db_data = TinyDB('data.json')
 
 # Inicializar la variable de sesión para el nombre de usuario
 if 'username' not in st.session_state:
@@ -30,11 +31,11 @@ def get_user_data(username):
 def registrar_usuario(username, password):
     User = Query()
     # Verifica si el usuario ya existe en la base de datos
-    if db.search(User.username == username):
+    if db_users.search(User.username == username):
         return False, "El usuario ya existe. Por favor, elija otro nombre de usuario."
 
     # Agrega el nuevo usuario a la base de datos
-    db.insert({'username': username, 'password': password})
+    db_users.insert({'username': username, 'password': password})
 
     return True, "Registro exitoso. Ahora puede iniciar sesión."
 
@@ -43,7 +44,7 @@ def registrar_usuario(username, password):
 def verificar_credenciales(username, password):
     User = Query()
     # Busca el usuario en la base de datos
-    user = db.get((User.username == username) & (User.password == password))
+    user = db_users.get((User.username == username) & (User.password == password))
     if user:
         return True, "Inicio de sesión exitoso."
     else:
@@ -51,11 +52,16 @@ def verificar_credenciales(username, password):
 
 # Función para mostrar los gastos e ingresos del usuario actual
 def mostrar_gastos_ingresos():
-    username = get_current_user()
-    user_data = get_user_data(username)
-
+    username = st.session_state.username
+    User = Query()
+    user_data = db_data.search(User.username == username)
     st.write(f"Gastos e Ingresos de {username}:")
-    st.dataframe(user_data)
+
+    # Convierte los datos en un DataFrame de pandas
+    df = pd.DataFrame(user_data)
+
+    # Muestra el DataFrame en forma de tabla
+    st.write(df)
 
 # Título de la aplicación
 st.title("Seguimiento de Gastos Personales")
@@ -84,11 +90,8 @@ if get_current_user() is not None:
             categoria_gastos = st.selectbox("Seleccione la categoría:", ["Alimentación", "Cuentas y pagos", "Casa", "Transporte", "Ropa", "Salud e higiene", "Diversión", "Otros gastos"])
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
-                username = get_current_user()
-                user_data = get_user_data(username)
-                nuevo_dato = pd.DataFrame({'Fecha': [fecha], 'Tipo': ['Gasto'], 'Categoría': [categoria_gastos], 'Monto': [monto]})
-                user_data = pd.concat([user_data, nuevo_dato], ignore_index=True)
-                user_data.to_csv(f"{username}_data.csv", index=False)
+                username = st.session_state.username
+                db_data.insert({'username': username, 'Fecha': str(fecha), 'Tipo': 'Gasto', 'Categoría': categoria_gastos, 'Monto': monto})
                 st.success("Gasto registrado exitosamente.")
                 # Limpiar los campos después de registrar el gasto
                 fecha = ""
@@ -104,11 +107,8 @@ if get_current_user() is not None:
             categoria_ingresos = st.selectbox("Seleccione la categoría:", ['Salario', 'Varios'])
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
-                username = get_current_user()
-                user_data = get_user_data(username)
-                nuevo_dato = pd.DataFrame({'Fecha': [fecha], 'Tipo': ['Ingreso'], 'Categoría': [categoria_ingresos], 'Monto': [monto]})
-                user_data = pd.concat([user_data, nuevo_dato], ignore_index=True)
-                user_data.to_csv(f"{username}_data.csv", index=False)
+                username = st.session_state.username
+                db_data.insert({'username': username, 'Fecha': str(fecha), 'Tipo': 'Ingreso', 'Categoría': categoria_ingresos, 'Monto': monto})
                 st.success("Ingreso registrado exitosamente.")
     if st.button("Ver Gastos e Ingresos"):
         mostrar_gastos_ingresos()
