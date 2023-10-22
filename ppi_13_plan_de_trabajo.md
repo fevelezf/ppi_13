@@ -28,15 +28,18 @@
 |-------|-------------|-------------|--------------|
 | 1     | Se optimizara el registro de gastos e ingresos. | Sebastian | Pendiente |
 | 2     | Se iniciara con la seccion "Paseos". | Sebastian | Pendiente |
-| 3    | Se Gestionaran los csv. | Felipe | Pendiente |
+| 3    | Se Gestionaran los archivos. | Sebastian | Pendiente |
 | 4     | Se hara la seccion de "Descarga tus gastos" | Felipe | Pendiente |
+| 5     | Se hara la conexion de correo electronico | Felipe | Pendiente |
+
 
 # Informe 06
 | Tarea | Descripción | Responsable | Cumplimiento |
 |-------|-------------|-------------|--------------|
 | 1     | Se Optimizara la aplicación con las características esperadas | Sebastian | Pendiente |
 | 2     | Se mejoraran aspectos | Felipe | Pendiente |
-| 3    | Se corregirán los errores encontrados | Felipe y Sebastian | Pendiente |
+| 3     | Se procedera a mandar notificaiones via e-Mail | Felipe | Pendiente |
+| 4    | Se corregirán los errores encontrados | Felipe y Sebastian | Pendiente |
 
 # Informe 07
 | Tarea | Descripción | Responsable | Cumplimiento |
