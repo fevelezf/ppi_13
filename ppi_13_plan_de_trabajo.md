@@ -18,8 +18,8 @@
 | 3     | Priorizar el desarrollo de la interfaz gráfica. | Sebastian | Pendiente|
 | 4     | Iniciar las secciones "Inicio" y "Nosotros" en la página web. | Sebastian | Pendiente|
 | 5     | Añadir la Politica de Tratamiento de datos | Sebastian | Pendiente|
-| 6     | Realizar Graficos a partir de datos | Felipe | Pendiente|
-| 7     | Optimizar el Registro de usuarios  | Sebastian | Pendiente|
+| 6     | Realizar Graficos a partir de datos | Sebastian | Pendiente|
+| 7     | Optimizar el Registro de usuarios  | Felipe | Pendiente|
 | 8     | Empezar la persistencia de los datos | Felipe | Pendiente|
 
 
