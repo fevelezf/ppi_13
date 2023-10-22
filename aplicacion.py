@@ -15,33 +15,37 @@ if 'username' not in st.session_state:
 
 # Obtener el nombre de usuario actual después del inicio de sesión
 def get_current_user():
+    '''Esta funcion obtiene el nombre del usuario actual despues
+    del inicio de sesion
+    '''
     return st.session_state.username
 
-# Función para cargar o crear un archivo CSV para el usuario actual
-def get_user_data(username):
-    user_data_filename = f"{username}_data.csv"
-    if not os.path.exists(user_data_filename):
-        # Si el archivo no existe, crea un DataFrame vacío
-        return pd.DataFrame({'Fecha': [], 'Tipo': [], 'Categoría': [], 'Monto': []})
-    else:
-        # Si el archivo existe, carga los datos desde el archivo CSV
-        return pd.read_csv(user_data_filename)
 
 # Función para registrar un nuevo usuario
-def registrar_usuario(username, password):
+def registrar_usuario(username, password, first_name, last_name, email, confirm_password):
+    '''Esta funcion usa la libreria tinydb para registrar un usuario en un archivo llamado
+    db_users
+    '''
     User = Query()
     # Verifica si el usuario ya existe en la base de datos
     if db_users.search(User.username == username):
         return False, "El usuario ya existe. Por favor, elija otro nombre de usuario."
 
+    # Verifica si las contraseñas coinciden
+    if password != confirm_password:
+        return False, "Las contraseñas no coinciden. Por favor, vuelva a intentar."
+
     # Agrega el nuevo usuario a la base de datos
-    db_users.insert({'username': username, 'password': password})
+    db_users.insert({'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
 
     return True, "Registro exitoso. Ahora puede iniciar sesión."
 
 
 # Función para verificar credenciales
 def verificar_credenciales(username, password):
+    '''Esta funcion recibe como argumento el username y el password y verifica que
+    sean inguales para permitir el ingreso al sistema
+    '''
     User = Query()
     # Busca el usuario en la base de datos
     user = db_users.get((User.username == username) & (User.password == password))
@@ -50,8 +54,12 @@ def verificar_credenciales(username, password):
     else:
         return False, "Credenciales incorrectas. Por favor, verifique su nombre de usuario y contraseña."
 
+
 # Función para mostrar los gastos e ingresos del usuario actual
 def mostrar_gastos_ingresos():
+    '''Esta funcion hace un filtrado en db_data segun el usuario en ese momento y 
+    muestra los gastos e ingresos
+    '''
     username = st.session_state.username
     User = Query()
     user_data = db_data.search(User.username == username)
@@ -133,12 +141,17 @@ else:
         st.write("Registro de Usuario")
 
         # Campos de registro
+        first_name = st.text_input("Nombre del Usuario:")
+        last_name = st.text_input("Apellidos del Usuario:")
+        email = st.text_input("Correo electronico del Usuario:")
         new_username = st.text_input("Nuevo Nombre de Usuario:")
-        new_password = st.text_input("Nueva Contraseña:", type="password")
+        new_password = st.text_input("Nueva Contraseña:", type = "password")
+        confirm_password = st.text_input("Confirmar contraseña:", type = "password")
 
         #Boton de registro de usuario
         if st.button("Registrarse"):
-            registration_successful, message = registrar_usuario(new_username, new_password)
+            registration_successful, message = registrar_usuario(new_username, new_password,first_name,
+                                                                last_name, email, confirm_password)
             if registration_successful:
                 st.success(message)
             else:
