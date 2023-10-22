@@ -1,0 +1,11 @@
+/* custom.css */
+.bottom-right-link {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    text-decoration: none;
+}

@@ -5,13 +5,11 @@ import matplotlib.pyplot as plt
 import os
 from tinydb import TinyDB, Query
 
-# Inicializa la base de datos para usuarios y gastos e ingresos
-db_users = TinyDB('usuarios.json')
-db_data = TinyDB('data.json')
 
-# Inicializar la variable de sesión para el nombre de usuario
-if 'username' not in st.session_state:
-    st.session_state.username = None
+# Cargar el CSS personalizado
+with open("custom.css") as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
 
 # Obtener el nombre de usuario actual después del inicio de sesión
 def get_current_user():
@@ -70,6 +68,15 @@ def mostrar_gastos_ingresos():
 
     # Muestra el DataFrame en forma de tabla
     st.write(df)
+
+
+# Inicializa la base de datos para usuarios y gastos e ingresos
+db_users = TinyDB('usuarios.json')
+db_data = TinyDB('data.json')
+
+# Inicializar la variable de sesión para el nombre de usuario
+if 'username' not in st.session_state:
+    st.session_state.username = None
 
 # Título de la aplicación
 st.title("Seguimiento de Gastos Personales")
@@ -159,3 +166,6 @@ else:
     elif menu_option == "Salir":
         st.balloons()
         st.stop()
+
+st.markdown('<a class="bottom-right-link" href="https://www.ejemplo.com" target="_blank">Enlace de ejemplo</a>',
+            unsafe_allow_html=True)
