@@ -13,6 +13,10 @@ with open("custom.css") as f:
 
 # Función para crear un gráfico de barras por categorías de gastos e ingresos (Sebastian)
 def crear_grafico_barras_categorias():
+    '''Esta funcion realiza un gráfico de barras de la 
+    gastos sumatoria de ingresos por categoria que
+    haya tenido el usuario
+    '''
     User = Query()
     username = st.session_state.username
     user_data = db_data.search(User.username == username)
@@ -37,17 +41,23 @@ def crear_grafico_barras_categorias():
             else:
                 categorias_ingresos[categoria] = monto
 
-    # Crear el gráfico de barras
+    # Nos ayudamos de el tipo de dato set para poder crear la lista completa
+    # De categorías
     categorias_g = set(list(categorias_gastos.keys()))
     categorias_i = set(list(categorias_ingresos.keys()))
     categorias = list(categorias_g.union(categorias_i))
     gastos = [categorias_gastos[categoria] if categoria in categorias_gastos else 0 for categoria in categorias]
     ingresos = [categorias_ingresos[categoria] if categoria in categorias_ingresos else 0 for categoria in categorias]
 
-    x = np.arange(len(categorias))  # Posiciones en el eje x
-    width = 0.35  # Ancho de las barras
+    # Posiciones en el eje x
+    x = np.arange(len(categorias))
 
+    # Ancho de las barras
+    width = 0.35
+
+    # Crear el gráfico de barras
     fig, ax = plt.subplots()
+    # Primero graficamos gastos y luego ingresos
     ax.bar(x - width/2, gastos, width, label='Gastos', color='red')
     ax.bar(x + width/2, ingresos, width, label='Ingresos', color='green')
 
@@ -62,6 +72,9 @@ def crear_grafico_barras_categorias():
 
 # Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
 def crear_grafico_barras_gastos_ingresos():
+    '''Esta funcion realiza un gráfico de barras de de la sumatoria
+    de gastos e ingresos que haya tenido el usuario
+    '''
     User= Query()
     username = st.session_state.username
     user_data = db_data.search(User.username == username)
