@@ -4,8 +4,8 @@
 3. Descripción del Proyecto
 4. Uso del Aplicativo
 ## Autores:
-    Sebastian Aguinaga
-    Felipe Vélez Fernández
+    Sebastian Aguinaga saguinaga@unal.edu.co
+    Felipe Vélez Fernández fevelezf@unal.Edu.co
 ## Descripcion del proyecto:
 Se busca crear una aplicación llamada FinanzApp. En esta, el usuario deberá registrar sus finanzas para el procesamiento de estas. El usuario deberá ingresar con su usuario y su clave para garantizar la seguridad de sus datos. Además, este debe ingresar:
 

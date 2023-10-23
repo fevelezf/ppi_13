@@ -11,6 +11,31 @@ with open("custom.css") as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 
+# Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
+def crear_grafico_barras_gastos_ingresos():
+    User= Query()
+    username = st.session_state.username
+    user_data = db_data.search(User.username == username)
+    
+    # Filtrar datos de gastos e ingresos
+    gastos = [d['Monto'] for d in user_data if d['Tipo'] == 'Gasto']
+    ingresos = [d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso']
+    
+    # Calcular el total de gastos e ingresos
+    total_gastos = sum(gastos)
+    total_ingresos = sum(ingresos)
+    
+    # Crear el gráfico de barras
+    labels = ['Gastos', 'Ingresos']
+    values = [total_gastos, total_ingresos]
+    colors = ['red', 'green']
+    
+    fig, ax = plt.subplots()
+    ax.bar(labels, values, color=colors)
+    
+    st.pyplot(fig)
+
+
 # Obtener el nombre de usuario actual después del inicio de sesión
 def get_current_user():
     '''Esta funcion obtiene el nombre del usuario actual despues
@@ -68,6 +93,7 @@ def mostrar_gastos_ingresos():
 
     # Muestra el DataFrame en forma de tabla
     st.write(df)
+    crear_grafico_barras_gastos_ingresos()
 
 
 # Inicializa la base de datos para usuarios y gastos e ingresos
