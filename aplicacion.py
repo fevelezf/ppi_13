@@ -38,8 +38,10 @@ def crear_grafico_barras_categorias():
                 categorias_ingresos[categoria] = monto
 
     # Crear el gráfico de barras
-    categorias = list(categorias_gastos.keys())
-    gastos = [categorias_gastos[categoria] for categoria in categorias]
+    categorias_g = set(list(categorias_gastos.keys()))
+    categorias_i = set(list(categorias_ingresos.keys()))
+    categorias = list(categorias_g.union(categorias_i))
+    gastos = [categorias_gastos[categoria] if categoria in categorias_gastos else 0 for categoria in categorias]
     ingresos = [categorias_ingresos[categoria] if categoria in categorias_ingresos else 0 for categoria in categorias]
 
     x = np.arange(len(categorias))  # Posiciones en el eje x
