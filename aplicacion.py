@@ -46,7 +46,7 @@ def crear_grafico_barras_categorias():
     width = 0.35  # Ancho de las barras
 
     fig, ax = plt.subplots()
-#    ax.bar(x - width/2, gastos, width, label='Gastos', color='red')
+    ax.bar(x - width/2, gastos, width, label='Gastos', color='red')
     ax.bar(x + width/2, ingresos, width, label='Ingresos', color='green')
 
     ax.set_xlabel('Categorías')
