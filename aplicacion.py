@@ -167,5 +167,5 @@ else:
         st.balloons()
         st.stop()
 
-st.markdown('<a class="bottom-right-link" href="https://docs.google.com/document/d/e/2PACX-1vSIomi8VyMbiALUI7HIL-I94KqkAB6jVr5OtJztLis_plX4uiHcSexuGu17V8WcccZOPt4V7nCoIkZw/pub" target="_blank">Acerca de nosotros</a>',
+st.markdown('<a class="popup-button" href="https://docs.google.com/document/d/e/2PACX-1vSIomi8VyMbiALUI7HIL-I94KqkAB6jVr5OtJztLis_plX4uiHcSexuGu17V8WcccZOPt4V7nCoIkZw/pub" target="_blank">Acerca de nosotros</a>',
             unsafe_allow_html=True)
