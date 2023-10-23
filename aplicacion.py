@@ -167,21 +167,5 @@ else:
         st.balloons()
         st.stop()
 
-# Botón de nosotros esquina inferior derecha (Sebastian)
-#st.markdown('<a class="bottom-right-link" href="https://www.ejemplo.com" target="_blank">Enlace de ejemplo</a>',
-#            unsafe_allow_html=True)
-# Crear un botón en la esquina inferior derecha
-st.write("""
-    <style>
-    .stButton > button {
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-    }
-    </style>    
-""", unsafe_allow_html=True)
-
-if st.button("Mostrar ventana emergente"):
-    # Utiliza st.beta_expander para crear una ventana emergente
-    with st.beta_expander("Texto en la ventana emergente"):
-        st.write("Aquí puedes colocar tu texto u otros elementos")
+st.markdown('<a class="bottom-right-link" href="https://docs.google.com/document/d/e/2PACX-1vSIomi8VyMbiALUI7HIL-I94KqkAB6jVr5OtJztLis_plX4uiHcSexuGu17V8WcccZOPt4V7nCoIkZw/pub" target="_blank">Acerca de nosotros</a>',
+            unsafe_allow_html=True)
