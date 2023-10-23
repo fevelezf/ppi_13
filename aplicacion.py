@@ -170,25 +170,18 @@ else:
 # Botón de nosotros esquina inferior derecha (Sebastian)
 #st.markdown('<a class="bottom-right-link" href="https://www.ejemplo.com" target="_blank">Enlace de ejemplo</a>',
 #            unsafe_allow_html=True)
-st.markdown(
-    """
+# Crear un botón en la esquina inferior derecha
+st.write("""
     <style>
-    .popup-button {
+    .stButton > button {
         position: fixed;
         bottom: 10px;
         right: 10px;
-        background-color: #007BFF;
-        color: #fff;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
     }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+    </style>    
+""", unsafe_allow_html=True)
 
-# Botón para abrir la ventana emergente
-if st.button("Acerca de Nosotros", key="popup_button", style="popup-button"):
-    st.components.v1.html(open("popup.html").read(), height=300)
+if st.button("Mostrar ventana emergente"):
+    # Utiliza st.beta_expander para crear una ventana emergente
+    with st.beta_expander("Texto en la ventana emergente"):
+        st.write("Aquí puedes colocar tu texto u otros elementos")
