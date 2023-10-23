@@ -143,6 +143,7 @@ def mostrar_gastos_ingresos():
     crear_grafico_barras_gastos_ingresos()
 
 
+
 # Inicializa la base de datos para usuarios y gastos e ingresos
 db_users = TinyDB('usuarios.json')
 db_data = TinyDB('data.json')
@@ -200,6 +201,7 @@ if get_current_user() is not None:
                 st.success("Ingreso registrado exitosamente.")
     if st.button("Ver Gastos e Ingresos"):
         mostrar_gastos_ingresos()
+        crear_grafico_barras_categorias()
 else:
     # Inicio de sesión
     if menu_option == "Inicio":
@@ -254,5 +256,6 @@ else:
         st.balloons()
         st.stop()
 
+# Botón acerca de nosotros esquina inferior derecha (Sebastian)
 st.markdown('<a class="popup-button" href="https://docs.google.com/document/d/e/2PACX-1vSIomi8VyMbiALUI7HIL-I94KqkAB6jVr5OtJztLis_plX4uiHcSexuGu17V8WcccZOPt4V7nCoIkZw/pub" target="_blank">Acerca de nosotros</a>',
             unsafe_allow_html=True)
