@@ -167,5 +167,9 @@ else:
         st.balloons()
         st.stop()
 
-st.markdown('<a class="bottom-right-link" href="https://www.ejemplo.com" target="_blank">Enlace de ejemplo</a>',
-            unsafe_allow_html=True)
+# Botón de nosotros esquina inferior derecha (Sebastian)
+#st.markdown('<a class="bottom-right-link" href="https://www.ejemplo.com" target="_blank">Enlace de ejemplo</a>',
+#            unsafe_allow_html=True)
+
+if st.button("Acerca de Nosotros", key="popup_button", class="popup-button"):
+    st.components.v1.html(open("popup.html").read(), height=300)

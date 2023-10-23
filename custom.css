@@ -1,11 +1,12 @@
-/* custom.css */
-.bottom-right-link {
+/* custom.css  SEBASTIAN*/ 
+.popup-button {
     position: fixed;
     bottom: 10px;
     right: 10px;
-    background-color: #fff;
-    padding: 5px;
-    border: 1px solid #000;
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
     border-radius: 5px;
-    text-decoration: none;
+    cursor: pointer;
 }
