@@ -11,6 +11,53 @@ with open("custom.css") as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 
+# Función para crear un gráfico de barras por categorías de gastos e ingresos (Sebastian)
+def crear_grafico_barras_categorias():
+    User = Query()
+    username = st.session_state.username
+    user_data = db_data.search(User.username == username)
+
+    # Filtrar datos de gastos e ingresos
+    categorias_gastos = {}
+    categorias_ingresos = {}
+
+    for d in user_data:
+        if d['Tipo'] == 'Gasto':
+            categoria = d['Categoría']
+            monto = d['Monto']
+            if categoria in categorias_gastos:
+                categorias_gastos[categoria] += monto
+            else:
+                categorias_gastos[categoria] = monto
+        elif d['Tipo'] == 'Ingreso':
+            categoria = d['Categoría']
+            monto = d['Monto']
+            if categoria in categorias_ingresos:
+                categorias_ingresos[categoria] += monto
+            else:
+                categorias_ingresos[categoria] = monto
+
+    # Crear el gráfico de barras
+    categorias = list(categorias_gastos.keys())
+    gastos = [categorias_gastos[categoria] for categoria in categorias]
+    ingresos = [categorias_ingresos[categoria] if categoria in categorias_ingresos else 0 for categoria in categorias]
+
+    x = np.arange(len(categorias))  # Posiciones en el eje x
+    width = 0.35  # Ancho de las barras
+
+    fig, ax = plt.subplots()
+    ax.bar(x - width/2, gastos, width, label='Gastos', color='red')
+    ax.bar(x + width/2, ingresos, width, label='Ingresos', color='green')
+
+    ax.set_xlabel('Categorías')
+    ax.set_ylabel('Monto')
+    ax.set_title(f'Gastos e Ingresos por Categoría de {username}')
+    ax.set_xticks(x)
+    ax.set_xticklabels(categorias, rotation=45, ha="right")
+    ax.legend()
+
+    st.pyplot(fig)
+
 # Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
 def crear_grafico_barras_gastos_ingresos():
     User= Query()
