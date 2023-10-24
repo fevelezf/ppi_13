@@ -259,7 +259,7 @@ else:
                     st.write(politica)
                     st.session_state.politica_vista = True
                 # Casilla de verificación para aceptar la política
-        aceptar_politica = st.checkbox("Acepta la política de datos personales")
+        aceptar_politica = st.checkbox("¿Aceptas la política de datos personales?")
         # Botón de registro de usuario en la primera columna
         if col1.button("Registrarse") and aceptar_politica and st.session_state.politica_vista:
             registration_successful, message = registrar_usuario(new_username, new_password, first_name, last_name, email, confirm_password)
