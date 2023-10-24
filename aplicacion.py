@@ -247,12 +247,22 @@ else:
 
         # Crear dos columnas para los botones
         col1, col2 = st.columns(2)
-        # Casilla de verificación para aceptar la política de datos personales
-        aceptar_politica = st.checkbox("Acepta la política de datos personales")
+        # Variable de estado para rastrear si el usuario ha visto la política
+        if 'politica_vista' not in st.session_state:
+            st.session_state.politica_vista = False
 
+        # Botón para abrir la ventana emergente en la segunda columna
+        if col2.button("Ver Política de Tratamiento de Datos"):
+            with open("politica_datos.txt", "r") as archivo:
+                politica = archivo.read()
+                with st.expander("Política de Tratamiento de Datos",expanded=True):
+                    st.write(politica)
+                    st.session_state.politica_vista = True
+                # Casilla de verificación para aceptar la política
+        aceptar_politica = st.checkbox("Acepta la política de datos personales")
         # Botón de registro de usuario en la primera columna
-        if col1.button("Registrarse") and aceptar_politica:
-            registration_successful, message = registrar_usuario(new_username, new_password)
+        if col1.button("Registrarse") and aceptar_politica and st.session_state.politica_vista:
+            registration_successful, message = registrar_usuario(new_username, new_password, first_name, last_name, email, confirm_password)
             if registration_successful:
                 st.success(message)
             else:
@@ -261,12 +271,9 @@ else:
         if not aceptar_politica:
             st.warning("Por favor, acepta la política de datos personales antes de registrarte.")
 
-        # Botón para abrir la ventana emergente en la segunda columna
-        if col2.button("Ver Política de Tratamiento de Datos"):
-            with open("politica_datos.txt", "r") as archivo:
-                politica = archivo.read()
-                with st.expander("Política de Tratamiento de Datos"):
-                    st.write(politica)
+        if not st.session_state.politica_vista:
+            st.warning("Por favor, lea la política de datos personales antes de registrarte.")
+
     elif menu_option == "Salir":
         st.balloons()
         st.stop()
