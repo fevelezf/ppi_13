@@ -4,6 +4,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 from tinydb import TinyDB, Query
+import requests
+#from forex_python.converter import CurrencyRates
 
 
 # Cargar el CSS personalizado
@@ -157,6 +159,7 @@ def mostrar_gastos_ingresos():
     st.write(df)
     crear_grafico_barras_gastos_ingresos()
 
+    
 
 def crear_fon_com(usernam, fon_name, members):
     # Añadimos el fondo común a la base de datos con la función
@@ -190,7 +193,6 @@ def upd_fon(fon_elegido , miem, amount):
 
 
 
-
 # Inicializa la base de datos para usuarios y gastos e ingresos
 db_users = TinyDB('usuarios.json')
 db_data = TinyDB('data.json')
@@ -204,7 +206,13 @@ if 'username' not in st.session_state:
 st.title("Seguimiento de Gastos Personales")
 
 # Menú desplegable en la barra lateral
-menu_option = st.sidebar.selectbox("Menú", ["Inicio", "Registro", "Cerrar Sesión"])  # Agregar la opción "Cerrar Sesión"
+if get_current_user() is not None:
+    # Sidebar menu options for logged-in users
+    menu_option = st.sidebar.selectbox("Menú", ["Pagina Principal", "Registrar Gasto", "Registrar Ingreso", "Mostrar Gastos e Ingresos",
+                                                "Crear Fondo Común", "Fondos comunes", "Cerrar Sesión"])
+else:
+    # Sidebar menu options for non-logged-in users
+    menu_option = st.sidebar.selectbox("Menú", ["Inicio", "Inicio de Sesion", "Registro","Conversion de Moneda"])
 
 # Si el usuario elige "Cerrar Sesión", restablecer la variable de sesión a None
 if menu_option == "Cerrar Sesión":
@@ -213,13 +221,24 @@ if menu_option == "Cerrar Sesión":
 
 # Si el usuario ya ha iniciado sesión, mostrar los botones
 if get_current_user() is not None:
-    st.write(f"Bienvenido, {get_current_user()}!")
+
+    if menu_option == "Pagina Principal":
+        username = get_current_user()
+        st.write(f'<h4 style="font-size: 26px; font-weight: bold; text-align: center;">Hola {username}!</h4>', unsafe_allow_html=True)
+
+        # Calculate total expenses and income for the user
+        User = Query()
+        user_data = db_data.search(User.username == username)
+        gastos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Gasto')
+        ingresos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso')
+
+        # Display the total expenses and income
+        st.write(f"<h4 style='font-size: 26px;'>En total te has gastado: {gastos}</h4>", unsafe_allow_html=True)
+        st.write(f"<h4 style='font-size: 26px;'>Has tenido unos ingresos por el valor de: {ingresos}</h4>", unsafe_allow_html=True)
+
 
     # Botones para registrar gasto, ingreso o ver registros
-    option = st.selectbox("Selecciona una opción:", ["", "Registrar Gasto", "Registrar Ingreso"])
-    if option == "":
-        st.header("El ahorro es la semilla que plantas hoy para cosechar un futuro financiero más sólido y seguro.")
-    if option == "Registrar Gasto":
+    if menu_option == "Registrar Gasto":
         st.header("Registrar Gasto")
         with st.form("registrar_gasto_form"):
             fecha = st.date_input("Fecha del Gasto")
@@ -237,7 +256,7 @@ if get_current_user() is not None:
 
     # Establecer la opción del menú seleccionada en la variable de estado
     st.session_state.option = ""
-    if option == "Registrar Ingreso":
+    if menu_option == "Registrar Ingreso":
         st.header("Registrar Ingreso")
         with st.form("registrar_Ingreso_form"):
             fecha = st.date_input("Fecha del Ingreso")
@@ -247,7 +266,8 @@ if get_current_user() is not None:
                 username = st.session_state.username
                 db_data.insert({'username': username, 'Fecha': str(fecha), 'Tipo': 'Ingreso', 'Categoría': categoria_ingresos, 'Monto': monto})
                 st.success("Ingreso registrado exitosamente.")
-    if st.button("Ver Gastos e Ingresos"):
+
+    if menu_option == "Mostrar Gastos e Ingresos":
         mostrar_gastos_ingresos()
         crear_grafico_barras_categorias()
 
@@ -289,9 +309,16 @@ if get_current_user() is not None:
                 upd_fon(selected_fon, miem, amount)
 
 
+        else:
+            st.write("Aún no tienes un fondo común, \
+                    anímate a crear uno")
+
+
 else:
+
+
     # Inicio de sesión
-    if menu_option == "Inicio":
+    if menu_option == "Inicio de Sesion":
         st.write("Bienvenido al inicio de la aplicación.")
 
         # Campos de inicio de sesión
@@ -319,6 +346,9 @@ else:
 
         # Crear dos columnas para los botones
         col1, col2 = st.columns(2)
+        # Casilla de verificación para aceptar la política de datos personales
+        # Inicializa la variable aceptar_politica
+        
         # Variable de estado para rastrear si el usuario ha visto la política
         if 'politica_vista' not in st.session_state:
             st.session_state.politica_vista = False
@@ -331,7 +361,7 @@ else:
                     st.write(politica)
                     st.session_state.politica_vista = True
                 # Casilla de verificación para aceptar la política
-        aceptar_politica = st.checkbox("¿Aceptas la política de datos personales?")
+        aceptar_politica = st.checkbox("Acepta la política de datos personales")
         # Botón de registro de usuario en la primera columna
         if col1.button("Registrarse") and aceptar_politica and st.session_state.politica_vista:
             registration_successful, message = registrar_usuario(new_username, new_password, first_name, last_name, email, confirm_password)
@@ -344,7 +374,9 @@ else:
             st.warning("Por favor, acepta la política de datos personales antes de registrarte.")
 
         if not st.session_state.politica_vista:
-            st.warning("Por favor, lea la política de datos personales antes de registrarte.")
+            st.warning("Por favor, ve la política de datos personales antes de registrarte.")
+
+
 
     elif menu_option == "Salir":
         st.balloons()
@@ -353,5 +385,3 @@ else:
 # Botón acerca de nosotros esquina inferior derecha (Sebastian)
 st.markdown('<a class="popup-button" href="https://docs.google.com/document/d/e/2PACX-1vSIomi8VyMbiALUI7HIL-I94KqkAB6jVr5OtJztLis_plX4uiHcSexuGu17V8WcccZOPt4V7nCoIkZw/pub" target="_blank">Acerca de nosotros</a>',
             unsafe_allow_html=True)
-
-#hol
