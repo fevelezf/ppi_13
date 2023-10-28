@@ -158,10 +158,43 @@ def mostrar_gastos_ingresos():
     crear_grafico_barras_gastos_ingresos()
 
 
+def crear_fon_com(usernam, fon_name, members):
+    # Añadimos el fondo común a la base de datos con la función
+    # Insert pero primero creamos un diccionario donde el valor
+    # por defecto del aporte de todos los miembros sea 0
+    members = members.split(", ")
+    members.append(usernam)
+    mem_dic = dict(zip(members, [0] * len(members)))
+    db_us_fon_com.insert({"username": usernam, "fon_name": fon_name, "members": mem_dic})
+
+
+def mostrar_fon_com(fon_elegido):
+    User = Query()
+    username = st.session_state.username
+    fon_data = db_us_fon_com.search(
+        (User.username == username) & (User.fon_name == fon_elegido))
+    df_mem = pd.Series(fon_data[0]["members"])
+    st.write(df_mem)
+    return(fon_data[0]["members"].keys())
+
+def upd_fon(fon_elegido , miem, amount):
+    User = Query()
+    username = st.session_state.username
+    fon_data = db_us_fon_com.search(
+        (User.username == username) & (User.fon_name == fon_elegido))
+    data_act = fon_data[0]["members"]
+    data_act[miem]+=amount
+    db_us_fon_com.update({"members": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
+    st.success("Se ha registrado correctamente")
+
+
+
+
 
 # Inicializa la base de datos para usuarios y gastos e ingresos
 db_users = TinyDB('usuarios.json')
 db_data = TinyDB('data.json')
+db_us_fon_com = TinyDB('us_fon_com.json')
 
 # Inicializar la variable de sesión para el nombre de usuario
 if 'username' not in st.session_state:
@@ -217,6 +250,45 @@ if get_current_user() is not None:
     if st.button("Ver Gastos e Ingresos"):
         mostrar_gastos_ingresos()
         crear_grafico_barras_categorias()
+
+    if menu_option == "Crear Fondo Común":
+        st.header("Crear Fondo Común")
+        fon_name = st.text_input("Nombre del Fondo Común:")
+        Members = st.text_input("Integrantes del fondo(Por favor separar cor\
+                                coma y espacio)")
+        if st.button("Registrar"):
+            crear_fon_com(st.session_state.username, fon_name, Members)
+            st.success("El fondo ha sido creado")
+
+    if menu_option == "Fondos comunes":
+        st.header("Tus Fondos Comunes")
+        User = Query()
+        username = st.session_state.username
+        fon_data = db_us_fon_com.search(User.username == username)
+
+        if fon_data:
+            User = Query()
+            username = st.session_state.username
+            fon_data = db_us_fon_com.search(User.username == username)
+            df =  pd.DataFrame(fon_data)
+            lista = df["fon_name"].to_list()
+            selected_fon = st.selectbox("Elija el fondo al que desee acceder",
+                        lista)
+            if selected_fon:
+                User = Query()
+                username = st.session_state.username
+                fon_data = db_us_fon_com.search(
+                (User.username == username) & (User.fon_name == selected_fon))
+                df_mem = pd.Series(fon_data[0]["members"])
+                st.write(df_mem)
+                lista = fon_data[0]["members"].keys()
+                miem = st.selectbox('Seleccione el miembro', lista)
+                amount = st.number_input('Ingresa la cantidad que deseas añadir o retirar', min_value=1.0, step=1.0)
+
+            if st.button("Actualizar"):
+                upd_fon(selected_fon, miem, amount)
+
+
 else:
     # Inicio de sesión
     if menu_option == "Inicio":
