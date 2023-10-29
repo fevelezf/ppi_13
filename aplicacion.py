@@ -378,7 +378,6 @@ if get_current_user() is not None:
 
     if menu_option == "Descargar Gastos e Ingresos":
         # Convierte los datos en un DataFrame de pandas
-        df = pd.DataFrame(user_data)
         descargar_datos_excel(df)
 
 else:
