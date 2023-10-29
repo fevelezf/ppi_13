@@ -229,10 +229,6 @@ def upd_fon(fon_elegido , miem, amount):
     db_us_fon_com.update({"members": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
     st.success("Se ha registrado correctamente")
 
-
-
-
-
 # Inicializa la base de datos para usuarios, gastos e ingresos
 # y fondos comunes
 db_users = TinyDB('usuarios.json')
@@ -361,9 +357,34 @@ if get_current_user() is not None:
 
 else:
 
+    if menu_option == "Inicio":
+        # Enlace a consejos financieros
+        st.header("Consejos Financieros")
+        st.write("Aquí encontrarás consejos financieros útiles para mejorar tus finanzas personales.")
+        st.write("1. Ahorra una parte de tus ingresos cada mes.")
+        st.write("2. Crea un presupuesto y ajústate a él.")
+        st.write("3. Paga tus deudas a tiempo.")
+        st.write("4. Invierte tu dinero sabiamente.")
+        st.write("5. Educa tu mente financiera.")
 
+        # Enlace a videos de YouTube
+        st.header("Ahorrar no es solo guardar, sino tambien, saber gastar")
+        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">Y para ti... ¿Qué es ahorrar?</h4>', unsafe_allow_html=True)
+
+        st.video("https://www.youtube.com/watch?v=KDxhvehEius&ab_channel=MedallaMilagrosa")
+
+        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">Tan facil como jugar... es ahorrar</h4>', unsafe_allow_html=True)
+
+        st.video("https://www.youtube.com/watch?v=gqtojhFaSlE&ab_channel=Bancolombia")
+
+        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">Y... ¿Sabes que es un ciclo economico?</h4>', unsafe_allow_html=True)
+
+        st.video("https://www.youtube.com/watch?v=7jklUV3QE70&list=PLYV86yxR8Np89gAhNR8LTpSe7_QthTMHY&index=4&ab_channel=MedallaMilagrosa")
+
+        st.write('<h2 style="font-size: 30px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">¡Prepara tu camino hacia un futuro financiero más sólido! Regístrate ahora.</h2>', unsafe_allow_html=True)
+    
     # Inicio de sesión
-    if menu_option == "Inicio de Sesion":
+    elif menu_option == "Inicio de Sesion":
         st.write("Bienvenido al inicio de la aplicación.")
 
         # Campos de inicio de sesión
