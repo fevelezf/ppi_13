@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
 from tinydb import TinyDB, Query
+import base64
 #from forex_python.converter import CurrencyRates
 
 
@@ -98,6 +99,23 @@ def crear_grafico_barras_gastos_ingresos():
     ax.set_ylabel('Porcentaje')
     st.pyplot(fig)
 
+# Función para descargar los datos en formato Excel
+def descargar_datos_excel():
+    # Obtener los datos del usuario actual
+    username = st.session_state.username
+    User = Query()
+    user_data = db_data.search(User.username == username)
+
+    # Crear un DataFrame de pandas con los datos
+    df = pd.DataFrame(user_data)
+
+    # Convertir el DataFrame a formato Excel
+    output = df.to_excel(index=False, encoding="utf-8")
+
+    # Crear un enlace de descarga
+    b64 = base64.b64encode(output.encode()).decode()
+    href = f'<a href="data:file/excel;base64,{b64}" download="datos_{username}.xlsx">Descargar archivo Excel</a>'
+    st.markdown(href, unsafe_allow_html=True)
 
 # Obtener el nombre de usuario actual después del inicio de sesión
 def get_current_user():
@@ -245,7 +263,7 @@ st.title("Seguimiento de Gastos Personales")
 if get_current_user() is not None:
     # Sidebar menu options for logged-in users
     menu_option = st.sidebar.selectbox("Menú", ["Pagina Principal", "Registrar Gasto", "Registrar Ingreso", "Mostrar Gastos e Ingresos",
-                                                "Crear Fondo Común", "Fondos comunes", "Cerrar Sesión"])
+                                                "Crear Fondo Común", "Fondos comunes","Descargar Gastos e Ingresos", "Cerrar Sesión"])
 else:
     # Sidebar menu options for non-logged-in users
     menu_option = st.sidebar.selectbox("Menú", ["Inicio", "Inicio de Sesion", "Registro","Conversion de Moneda"])
@@ -353,6 +371,8 @@ if get_current_user() is not None:
             st.write("Aún no tienes un fondo común, \
                     anímate a crear uno")
 
+    if menu_option == "Descargar Gastos e Ingresos":
+        descargar_datos_excel()
 
 else:
 
