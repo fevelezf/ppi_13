@@ -102,6 +102,7 @@ def crear_grafico_barras_gastos_ingresos():
 
 # Función para descargar los datos en formato Excel
 def descargar_datos_excel():
+def descargar_datos_excel():
     # Obtener los datos del usuario actual
     username = st.session_state.username
     User = Query()
@@ -113,7 +114,7 @@ def descargar_datos_excel():
     # Crear el archivo Excel en un buffer de Bytes
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, encoding="utf-8")
+    df.to_excel(writer, index=False, encoding="utf-8")  # Modifica esta línea
     writer.save()
     excel_data = output.getvalue()
 
