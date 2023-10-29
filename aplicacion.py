@@ -104,23 +104,26 @@ def crear_grafico_barras_gastos_ingresos():
 def descargar_datos_excel(df):
     # Crear un buffer de BytesIO para escribir el archivo Excel
     output = BytesIO()
+    # Inicializar el escritor para el archivo Excel
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
     
-    # Escribe el DataFrame en el archivo Excel
-    df.to_excel(writer, index=False, encoding="utf-8")
-    
-    # Guarda el archivo
-    writer.save()
-    
-    # Lee los datos del buffer
-    excel_data = output.getvalue()
-    
-    # Codifica los datos en base64 para descargar el archivo
-    b64 = base64.b64encode(excel_data).decode()
-    href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="datos.xlsx">Descargar archivo Excel</a>'
-    
-    # Muestra el enlace para descargar el archivo en la app de Streamlit
-    st.markdown(href, unsafe_allow_html=True)
+    try:
+        # Escribe el DataFrame en el archivo Excel
+        df.to_excel(writer, index=False, encoding="utf-8")
+        # Guarda el archivo
+        writer.save()
+        
+        # Lee los datos del buffer
+        excel_data = output.getvalue()
+        
+        # Codifica los datos en base64 para descargar el archivo
+        b64 = base64.b64encode(excel_data).decode()
+        href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="datos.xlsx">Descargar archivo Excel</a>'
+        
+        # Muestra el enlace para descargar el archivo en la app de Streamlit
+        st.markdown(href, unsafe_allow_html=True)
+    except Exception as e:
+        st.error(f"Error al intentar descargar los datos: {e}")
 
 # Obtener el nombre de usuario actual después del inicio de sesión
 def get_current_user():
