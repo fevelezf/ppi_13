@@ -102,7 +102,6 @@ def crear_grafico_barras_gastos_ingresos():
 
 # Función para descargar los datos en formato Excel
 def descargar_datos_excel():
-def descargar_datos_excel():
     # Obtener los datos del usuario actual
     username = st.session_state.username
     User = Query()
