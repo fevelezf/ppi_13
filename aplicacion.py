@@ -377,7 +377,6 @@ if get_current_user() is not None:
                     anímate a crear uno")
 
     if menu_option == "Descargar Gastos e Ingresos":
-        user_data = db_data.search(User.username == username)
         # Convierte los datos en un DataFrame de pandas
         df = pd.DataFrame(user_data)
         descargar_datos_excel(df)
