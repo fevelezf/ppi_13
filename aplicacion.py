@@ -280,7 +280,11 @@ if menu_option == "Cerrar Sesión":
 
 # Si el usuario ya ha iniciado sesión, mostrar los botones
 if get_current_user() is not None:
-
+    username = st.session_state.username
+    User = Query()
+    user_data = db_data.search(User.username == username)
+    # Convierte los datos en un DataFrame de pandas
+    df = pd.DataFrame(user_data)
     if menu_option == "Pagina Principal":
         username = get_current_user()
         st.write(f'<h4 style="font-size: 26px; font-weight: bold; text-align: center;">Hola {username}!</h4>', unsafe_allow_html=True)
@@ -377,7 +381,6 @@ if get_current_user() is not None:
                     anímate a crear uno")
 
     if menu_option == "Descargar Gastos e Ingresos":
-        # Convierte los datos en un DataFrame de pandas
         descargar_datos_excel(df)
 
 else:
