@@ -110,6 +110,12 @@ def descargar_datos_excel(df):
     try:
         # Escribe el DataFrame en el archivo Excel
         df.to_excel(writer, index=False)
+        
+        # Obtén el objeto XlsxWriter
+        workbook = writer.book
+        # Obtén la hoja del workbook
+        worksheet = writer.sheets['Sheet1']  # Asegúrate de ajustar 'Sheet1' al nombre de la hoja
+        
         # Guarda el archivo
         writer.save()
         
