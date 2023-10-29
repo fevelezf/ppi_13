@@ -162,38 +162,79 @@ def mostrar_gastos_ingresos():
     
 
 def crear_fon_com(usernam, fon_name, members):
+    """La función obtiene como primer parametro el username
+    de el usuario actual de la aplicación, el nombre de el fondo que desea
+    establecer al fondo a crear y los miembros que serán añadidos al 
+    fondo"""
     # Añadimos el fondo común a la base de datos con la función
     # Insert pero primero creamos un diccionario donde el valor
     # por defecto del aporte de todos los miembros sea 0
     members = members.split(", ")
     members.append(usernam)
     mem_dic = dict(zip(members, [0] * len(members)))
+    
+    # Insertamos en la base de datos la información necesaria
+    # para crear almacenar el fondo
     db_us_fon_com.insert({"username": usernam, "fon_name": fon_name, "members": mem_dic})
 
 
 def mostrar_fon_com(fon_elegido):
+    """La función obtiene como parámetro de entrada
+    el nombre de el fondo elegido a mostrar e internamente 
+    realiza todos los procedimientos para graficarlo"""
+    
+    # Realizamos la búsqueda en la base de datos con las
+    # dos llaves que vuelven única la busqueda, que son el 
+    # username del usuario y el nombre de el fondo elegido
     User = Query()
     username = st.session_state.username
     fon_data = db_us_fon_com.search(
         (User.username == username) & (User.fon_name == fon_elegido))
+    
+    # Accedemos a los miembros de el fondo común
+    # y nos ayudamos de el tipo de dato pandas.Series
+    # para imprimir en pantalla
     df_mem = pd.Series(fon_data[0]["members"])
     st.write(df_mem)
+    
+    # Retornamos una lista de todos los nombres de
+    # los miembros en el fondo ya que nos servirá 
+    # para realizar el selectbox
     return(fon_data[0]["members"].keys())
 
 def upd_fon(fon_elegido , miem, amount):
+    """La función obtiene como primer parametro
+    el nombre de el fondo elegido el miembro al cual se
+    realizaran las modificaciones y por último el valor
+    a modificar"""
+
+    # Realizamos la búsqueda en la base de datos con las
+    # dos llaves que vuelven única la busqueda, que son el 
+    # username del usuario y el nombre de el fondo elegido
     User = Query()
     username = st.session_state.username
     fon_data = db_us_fon_com.search(
         (User.username == username) & (User.fon_name == fon_elegido))
+    
+    # Accedemos a los miembros de el fondo común
+    # para poder actualizar el dato deseado
     data_act = fon_data[0]["members"]
+    # Actualizamos en el diccionario el dato deseado
     data_act[miem]+=amount
+
+    # Luego de hacer el query requerido
+    # actualizamos en la base de datos la columna
+    # members, sobreescribiendola con el diccionario
+    # actualizado
     db_us_fon_com.update({"members": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
     st.success("Se ha registrado correctamente")
 
 
 
 
-# Inicializa la base de datos para usuarios y gastos e ingresos
+
+# Inicializa la base de datos para usuarios, gastos e ingresos
+# y fondos comunes
 db_users = TinyDB('usuarios.json')
 db_data = TinyDB('data.json')
 db_us_fon_com = TinyDB('us_fon_com.json')
@@ -281,6 +322,10 @@ if get_current_user() is not None:
             st.success("El fondo ha sido creado")
 
     if menu_option == "Fondos comunes":
+        # Realizamos un query al sistema para verificar
+        # si el usuario posee fondos comunes, de lo contrario
+        # se saltara al else
+        
         st.header("Tus Fondos Comunes")
         User = Query()
         username = st.session_state.username
