@@ -101,27 +101,25 @@ def crear_grafico_barras_gastos_ingresos():
     st.pyplot(fig)
 
 # Función para descargar los datos en formato Excel
-def descargar_datos_excel():
-    # Obtener los datos del usuario actual
-    username = st.session_state.username
-    User = Query()
-    user_data = db_data.search(User.username == username)
-
-    # Crear un DataFrame de pandas con los datos
-    df = pd.DataFrame(user_data)
-
-    # Crear el archivo Excel en un buffer de Bytes
+def descargar_datos_excel(df):
+    # Crear un buffer de BytesIO para escribir el archivo Excel
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, encoding="utf-8")  # Modifica esta línea
+    
+    # Escribe el DataFrame en el archivo Excel
+    df.to_excel(writer, index=False, encoding="utf-8")
+    
+    # Guarda el archivo
     writer.save()
+    
+    # Lee los datos del buffer
     excel_data = output.getvalue()
-
-    # Convertir el archivo Excel en una cadena codificada en base64
+    
+    # Codifica los datos en base64 para descargar el archivo
     b64 = base64.b64encode(excel_data).decode()
-
-    # Crear el enlace de descarga
-    href = f'<a href="data:file/excel;base64,{b64}" download="datos_{username}.xlsx">Descargar archivo Excel</a>'
+    href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="datos.xlsx">Descargar archivo Excel</a>'
+    
+    # Muestra el enlace para descargar el archivo en la app de Streamlit
     st.markdown(href, unsafe_allow_html=True)
 
 # Obtener el nombre de usuario actual después del inicio de sesión
@@ -379,7 +377,10 @@ if get_current_user() is not None:
                     anímate a crear uno")
 
     if menu_option == "Descargar Gastos e Ingresos":
-        descargar_datos_excel()
+        user_data = db_data.search(User.username == username)
+        # Convierte los datos en un DataFrame de pandas
+        df = pd.DataFrame(user_data)
+        descargar_datos_excel(df)
 
 else:
 
