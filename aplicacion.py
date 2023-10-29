@@ -388,6 +388,7 @@ if get_current_user() is not None:
                     anímate a crear uno")
 
     if menu_option == "Descargar Gastos e Ingresos":
+        st.header("Descarga Aca tus datos para tu gestion en Casa ¡Animate!")
         descargar_datos_excel(df)
 
 else:
