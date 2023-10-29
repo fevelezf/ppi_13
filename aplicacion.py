@@ -448,5 +448,5 @@ else:
         st.stop()
 
 # Botón acerca de nosotros esquina inferior derecha (Sebastian)
-st.markdown('<a class="popup-button" href="https://docs.google.com/document/d/e/2PACX-1vSIomi8VyMbiALUI7HIL-I94KqkAB6jVr5OtJztLis_plX4uiHcSexuGu17V8WcccZOPt4V7nCoIkZw/pub" target="_blank">Acerca de nosotros</a>',
+st.markdown('<a class="popup-button" href="https://docs.google.com/document/d/e/2PACX-1vTNHzaSOTiy_uLe8uhSkzz12P_emSLGI7usf53F10noX3W-PfVVBK8PEXUizMSwi-zFPD1hEykVAxpZ/pub" target="_blank">Acerca de nosotros</a>',
             unsafe_allow_html=True)
