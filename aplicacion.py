@@ -102,6 +102,8 @@ def crear_grafico_barras_gastos_ingresos():
 
 # Función para descargar los datos en formato Excel
 def descargar_datos_excel(df):
+    '''Esta Funcion permite descargar los datos de cada usuario en un excel
+    '''
 # Crear un buffer de BytesIO para escribir el archivo Excel
     output = BytesIO()
 
