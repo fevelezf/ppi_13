@@ -109,7 +109,7 @@ def descargar_datos_excel(df):
     
     try:
         # Escribe el DataFrame en el archivo Excel
-        df.to_excel(writer, index=False, encoding="utf-8")
+        df.to_excel(writer, index=False)
         # Guarda el archivo
         writer.save()
         
