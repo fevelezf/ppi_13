@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from tinydb import TinyDB, Query
 import base64
+from io import BytesIO
 #from forex_python.converter import CurrencyRates
 
 
@@ -109,11 +110,17 @@ def descargar_datos_excel():
     # Crear un DataFrame de pandas con los datos
     df = pd.DataFrame(user_data)
 
-    # Convertir el DataFrame a formato Excel
-    output = df.to_excel(index=False, encoding="utf-8")
+    # Guardar el archivo Excel en un buffer de Bytes
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=False, encoding="utf-8")
+    writer.save()
+    excel_data = output.getvalue()
 
-    # Crear un enlace de descarga
-    b64 = base64.b64encode(output.encode()).decode()
+    # Convertir el archivo Excel en una cadena codificada en base64
+    b64 = base64.b64encode(excel_data).decode()
+
+    # Crear el enlace de descarga
     href = f'<a href="data:file/excel;base64,{b64}" download="datos_{username}.xlsx">Descargar archivo Excel</a>'
     st.markdown(href, unsafe_allow_html=True)
 
