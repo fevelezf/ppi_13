@@ -102,30 +102,26 @@ def crear_grafico_barras_gastos_ingresos():
 
 # Función para descargar los datos en formato Excel
 def descargar_datos_excel(df):
-    # Crear un buffer de BytesIO para escribir el archivo Excel
+# Crear un buffer de BytesIO para escribir el archivo Excel
     output = BytesIO()
+
     # Inicializar el escritor para el archivo Excel
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    
+
     try:
         # Escribe el DataFrame en el archivo Excel
         df.to_excel(writer, index=False)
-        
-        # Obtén el objeto XlsxWriter
-        workbook = writer.book
-        # Obtén la hoja del workbook
-        worksheet = writer.sheets['Sheet1']  # Asegúrate de ajustar 'Sheet1' al nombre de la hoja
-        
-        # Guarda el archivo
-        writer.save()
-        
+
+        # Cerrar el escritor para finalizar el proceso de escritura
+        writer.close()
+
         # Lee los datos del buffer
         excel_data = output.getvalue()
-        
+
         # Codifica los datos en base64 para descargar el archivo
         b64 = base64.b64encode(excel_data).decode()
         href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="datos.xlsx">Descargar archivo Excel</a>'
-        
+
         # Muestra el enlace para descargar el archivo en la app de Streamlit
         st.markdown(href, unsafe_allow_html=True)
     except Exception as e:
