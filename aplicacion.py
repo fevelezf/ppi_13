@@ -84,7 +84,7 @@ def enviar_correo(destinatario, asunto, cuerpo):
     smtp_port = 587
     smtp_username = 'gerenciafinanzapp@gmail.com'  # Reemplaza con tu dirección de correo de Gmail
     smtp_password = 'ejla icim yzls rfpy'  # Reemplaza con la contraseña de tu cuenta de Gmail
-     # Crear el mensaje MIME
+    # Crear el mensaje MIME
     msg = MIMEMultipart()
     msg['From'] = smtp_username
     msg['To'] = destinatario
@@ -507,10 +507,9 @@ else:
                 st.success(message)
                 destinatario = email  
                 asunto = 'Registro Exitoso Finanzapp'
-                cuerpo = (f'Hola {first_name} ,  Te damos la bienvenida a finanzapp\n Estamos muy felices de que estes con nostros, \
-                        Ahora podras registrar tus gastos e ingresos, podras verificar graficos y mucho mas...\n\
-                        Tu Usuario es: {new_username} \n Tu contrasena es: {new_password} \n\
-                            Es un placer que estes con nostros, Recuerda que ahorrando con Finanzapp, te rinde mas el dinero... ')
+                cuerpo = (f'Hola {first_name} ,  Te damos la bienvenida a finanzapp\n Estamos muy felices de que estes con nostros,
+                        Ahora podras registrar tus gastos e ingresos, podras verificar graficos y mucho mas...\n Tu Usuario es: {new_username} \n Tu contrasena es: {new_password} \n\
+                        Es un placer que estes con nostros, Recuerda que ahorrando con Finanzapp, te rinde mas el dinero... ')
 
                 enviar_correo(destinatario, asunto, cuerpo)
             else:
