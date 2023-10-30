@@ -80,10 +80,17 @@ def crear_grafico_barras_categorias():
 
 # Función para enviar un correo electrónico
 def enviar_correo(destinatario, asunto, cuerpo):
+    ''' Esta funcion envia correo segun el destinatario, el asunto y el cuerpo
+    Usando servidores TTS para el envio de ellos , usando contraseña de aplicacion y el correo
+    '''
+
+    #Puerto y Servidor
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
-    smtp_username = 'gerenciafinanzapp@gmail.com'  # Reemplaza con tu dirección de correo de Gmail
-    smtp_password = 'ejla icim yzls rfpy'  # Reemplaza con la contraseña de tu cuenta de Gmail
+
+    # Usuario y contraseña de correo
+    smtp_username = 'gerenciafinanzapp@gmail.com'  
+    smtp_password = 'ejla icim yzls rfpy'  
     # Crear el mensaje MIME
     msg = MIMEMultipart()
     msg['From'] = smtp_username
