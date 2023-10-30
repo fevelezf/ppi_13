@@ -7,6 +7,7 @@ from tinydb import TinyDB, Query
 import base64
 from io import BytesIO
 import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 #from forex_python.converter import CurrencyRates
@@ -89,18 +90,22 @@ def enviar_correo(destinatario, asunto, cuerpo):
     msg['Subject'] = asunto
     msg.attach(MIMEText(cuerpo, 'plain'))
 
+    
+    context = ssl.create_default_context()
     try:
-        # Conéctate al servidor SMTP de Gmail
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(smtp_username, smtp_password)
+        # Iniciar conexión con el servidor SMTP de Gmail utilizando SSL
+        with smtplib.SMTP_SSL(smtp_server, smtp_port, context=context) as server:
+            server.login(smtp_username, smtp_password)
 
-        # Envía el correo electrónico
-        server.sendmail(smtp_username, email, msg.as_string())
-        server.quit()
-        st.success("Correo enviado con éxito")
+            # Enviar el correo
+            server.sendmail(smtp_username, destinatario, message.as_string())
+
+            st.success("Correo enviado con éxito")
+
     except Exception as e:
         st.error(f"Error al enviar el correo: {e}")
+
+
 
 # Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
 def crear_grafico_barras_gastos_ingresos():
