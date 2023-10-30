@@ -6,6 +6,9 @@ import streamlit as st
 from tinydb import TinyDB, Query
 import base64
 from io import BytesIO
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 #from forex_python.converter import CurrencyRates
 
 
@@ -72,6 +75,32 @@ def crear_grafico_barras_categorias():
     ax.legend()
 
     st.pyplot(fig)
+# Configura los detalles del servidor SMTP para Gmail
+smtp_server = 'smtp.gmail.com'
+smtp_port = 587
+smtp_username = 'gerenciafinanzapp@gmail.com'  # Reemplaza con tu dirección de correo de Gmail
+smtp_password = 'Finanzapp.20'  # Reemplaza con la contraseña de tu cuenta de Gmail
+
+# Función para enviar un correo electrónico
+def enviar_correo(destinatario, asunto, cuerpo):
+    msg = MIMEMultipart()
+    msg['From'] = smtp_username
+    msg['To'] = destinatario
+    msg['Subject'] = asunto
+    msg.attach(MIMEText(cuerpo, 'plain'))
+
+    try:
+        # Conéctate al servidor SMTP de Gmail
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+
+        # Envía el correo electrónico
+        server.sendmail(smtp_username, destinatario, msg.as_string())
+        server.quit()
+        print("Correo enviado con éxito")
+    except Exception as e:
+        print("Error al enviar el correo:", e)
 
 # Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
 def crear_grafico_barras_gastos_ingresos():
@@ -469,6 +498,14 @@ else:
             registration_successful, message = registrar_usuario(new_username, new_password, first_name, last_name, email, confirm_password)
             if registration_successful:
                 st.success(message)
+                destinatario = email  
+                asunto = 'Registro Exitoso Finanzapp'
+                cuerpo = (f'Hola {first_name} ,  Te damos la bienvenida a finanzapp\n Estamos muy felices de que estés con nostros, \
+                        Ahora podras registrar tus gastos e ingresos, podras verificar graficos y mucho mas...\n\
+                        Tu Usuario es: {new_username} \n Tu contraseña es: {new_password} \n\
+                            Es un placer que estes con nostros, Recuerda que ahorrando con Finanzapp, te rinde mas el dinero... ')
+
+                enviar_correo(destinatario, asunto, cuerpo)
             else:
                 st.error(message)
 
@@ -477,8 +514,6 @@ else:
 
         if not st.session_state.politica_vista:
             st.warning("Por favor, ve la política de datos personales antes de registrarte.")
-
-
 
     elif menu_option == "Salir":
         st.balloons()
