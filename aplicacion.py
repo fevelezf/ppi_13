@@ -96,11 +96,11 @@ def enviar_correo(destinatario, asunto, cuerpo):
         server.login(smtp_username, smtp_password)
 
         # Envía el correo electrónico
-        server.sendmail(smtp_username, destinatario, msg.as_string())
+        server.sendmail(smtp_username, email, msg.as_string())
         server.quit()
-        print("Correo enviado con éxito")
+        st.success("Correo enviado con éxito")
     except Exception as e:
-        print("Error al enviar el correo:", e)
+        st.error(f"Error al enviar el correo: {e}")
 
 # Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
 def crear_grafico_barras_gastos_ingresos():
