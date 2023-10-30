@@ -88,9 +88,10 @@ def enviar_correo(destinatario, asunto, cuerpo):
     msg['From'] = smtp_username
     msg['To'] = destinatario
     msg['Subject'] = asunto
-    msg.attach(MIMEText(cuerpo, 'plain'))
+    msg.attach(MIMEText(cuerpo.encode('utf-8'), 'plain', 'utf-8'))
 
-    
+
+
     context = ssl.create_default_context()
     try:
         # Iniciar conexión con el servidor SMTP de Gmail utilizando SSL
