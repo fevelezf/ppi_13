@@ -13,24 +13,25 @@
 ## Informe 04
 |Tarea | Descripción | Responsable | Cumplimiento|
 |-------|-------------|-------------|--------------|
-| 1     | Se empezara a Implementar la página de registro de usuarios y guardar los datos en un archivo. | Felipe | Pendiente|
-| 2     | Se le empezara a dar funcionalidad a la aplicacion con funciones basicas. | Felipe | Pendiente|
-| 3     | Priorizar el desarrollo de la interfaz gráfica. | Sebastian | Pendiente|
-| 4     | Iniciar las secciones "Inicio" y "Nosotros" en la página web. | Sebastian | Pendiente|
-| 5     | Añadir la Politica de Tratamiento de datos | Sebastian | Pendiente|
-| 6     | Realizar Graficos a partir de datos | Sebastian | Pendiente|
-| 7     | Optimizar el Registro de usuarios  | Felipe | Pendiente|
-| 8     | Empezar la persistencia de los datos | Felipe | Pendiente|
+| 1     | Se empezara a Implementar la página de registro de usuarios y guardar los datos en un archivo. | Felipe | OK|
+| 2     | Se le empezara a dar funcionalidad a la aplicacion con funciones basicas. | Felipe | OK|
+| 3     | Priorizar el desarrollo de la interfaz gráfica. | Sebastian | OK|
+| 4     | Iniciar las secciones "Inicio" y "Nosotros" en la página web. | Sebastian | OK|
+| 5     | Añadir la Politica de Tratamiento de datos | Sebastian | OK|
+| 6     | Realizar Graficos a partir de datos | Sebastian | OK|
+| 7     | Optimizar el Registro de usuarios  | Felipe | OK|
+| 8     | Empezar la persistencia de los datos | Felipe | OK|
 
 
 ## Informe 05
 | Tarea | Descripción | Responsable | Cumplimiento |
 |-------|-------------|-------------|--------------|
-| 1     | Se optimizara el registro de gastos e ingresos. | Sebastian | Pendiente |
-| 2     | Se iniciara con la seccion "Paseos". | Sebastian | Pendiente |
-| 3    | Se Gestionaran los archivos. | Sebastian | Pendiente |
-| 4     | Se hara la seccion de "Descarga tus gastos" | Felipe | Pendiente |
-| 5     | Se hara la conexion de correo electronico | Felipe | Pendiente |
+| 1     | Se optimizara el registro de gastos e ingresos. | Sebastian | OK |
+| 2     | Se iniciara con la seccion "Paseos". | Sebastian | OK |
+| 3    | Se Gestionaran los archivos. | Sebastian | OK |
+| 4     | Se hara la seccion de "Descarga tus gastos" | Felipe | OK |
+| 5     | Se hara la conexion de correo electronico | Felipe | OK |
+| 6     | Se hara la pagina 'INICIO' sin tener que iniciar sesion | Felipe | OK |
 
 
 # Informe 06
