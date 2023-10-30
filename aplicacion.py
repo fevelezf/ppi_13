@@ -83,7 +83,7 @@ def enviar_correo(destinatario, asunto, cuerpo):
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
     smtp_username = 'gerenciafinanzapp@gmail.com'  # Reemplaza con tu dirección de correo de Gmail
-    smtp_password = 'Finanzapp.20'  # Reemplaza con la contraseña de tu cuenta de Gmail
+    smtp_password = 'ejla icim yzls rfpy'  # Reemplaza con la contraseña de tu cuenta de Gmail
     msg = MIMEMultipart()
     msg['From'] = smtp_username
     msg['To'] = destinatario
