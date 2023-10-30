@@ -94,7 +94,9 @@ def enviar_correo(destinatario, asunto, cuerpo):
     context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
     try:
         # Iniciar conexión con el servidor SMTP de Gmail utilizando SSL
-        with smtplib.SMTP_SSL(smtp_server, smtp_port, context=context) as server:
+        with smtplib.SMTP_SSL('smtp.yandex.ru', 465) as server:
+
+            #session = smtplib.SMTP_SSL('smtp.yandex.ru', 465)
             server.login(smtp_username, smtp_password)
 
             # Enviar el correo
