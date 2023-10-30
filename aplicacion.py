@@ -101,7 +101,7 @@ def enviar_correo(destinatario, asunto, cuerpo):
             server.login(smtp_username, smtp_password)
 
             # Enviar el correo
-            server.sendmail(smtp_username, destinatario, message.as_string())
+            server.sendmail(smtp_username, destinatario, cuerpo)
 
             st.success("Correo enviado con éxito")
 
