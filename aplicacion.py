@@ -84,32 +84,30 @@ def enviar_correo(destinatario, asunto, cuerpo):
     smtp_port = 587
     smtp_username = 'gerenciafinanzapp@gmail.com'  # Reemplaza con tu dirección de correo de Gmail
     smtp_password = 'ejla icim yzls rfpy'  # Reemplaza con la contraseña de tu cuenta de Gmail
+     # Crear el mensaje MIME
     msg = MIMEMultipart()
     msg['From'] = smtp_username
     msg['To'] = destinatario
     msg['Subject'] = asunto
-    msg.attach(MIMEText(cuerpo.encode('utf-8'), 'plain', 'utf-8'))
 
-
+    # Adjuntar el cuerpo del correo al mensaje con codificación UTF-8
+    body = cuerpo.encode('utf-8')
+    msg.attach(MIMEText(body, 'plain', 'utf-8'))
 
     context = ssl.create_default_context()
     try:
-        # Iniciar conexión con el servidor SMTP de Gmail utilizando SSL
+        # Iniciar conexión con el servidor SMTP de Gmail utilizando TLS
         with smtplib.SMTP(smtp_server, smtp_port) as server:
-
             server.starttls(context=context)
-
             server.login(smtp_username, smtp_password)
+            
+            # Enviar el correo con el mensaje MIME como string
+            server.sendmail(smtp_username, destinatario, msg.as_string())
 
-            # Enviar el correo
-            server.sendmail(smtp_username, destinatario, cuerpo)
-
-            st.success("Correo enviado con éxito")
+        st.success("Correo enviado con éxito")
 
     except Exception as e:
         st.error(f"Error al enviar el correo: {e}")
-
-
 
 # Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
 def crear_grafico_barras_gastos_ingresos():
