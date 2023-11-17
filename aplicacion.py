@@ -301,6 +301,42 @@ def upd_fon(fon_elegido , miem, amount):
     db_us_fon_com.update({"members": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
     st.success("Se ha registrado correctamente")
 
+
+def calculate_amortization(interest_rate, months, loan_amount):
+    # Calculating the monthly interest rate
+    monthly_interest_rate = interest_rate / 12 / 100
+    
+    # Calculating the monthly payment using the formula for an amortizing loan
+    monthly_payment = (loan_amount * monthly_interest_rate) / (1 - (1 + monthly_interest_rate) ** -months)
+    
+    # Creating a DataFrame for the amortization schedule
+    amortization_schedule = pd.DataFrame(
+        columns=['Month','Payment', 'Principal',
+                 'Interest', 'Remaining Balance'])
+    remaining_balance = loan_amount
+    
+    for month in range(1, months + 1):
+        interest = remaining_balance * monthly_interest_rate
+        principal = monthly_payment - interest
+        remaining_balance -= principal
+        
+        amortization_schedule = amortization_schedule._append({
+            'Month': month,
+            'Payment': monthly_payment,
+            'Principal': principal,
+            'Interest': interest,
+            'Remaining Balance': remaining_balance
+        }, ignore_index=True)
+
+    amortization_schedule.rename({"Month": "Mes", "Payment": "Pago",
+                                  "Pricipal": "Abono a deuda", "Interest": "Abono a interes",
+                                  "remaining_balance": "Deuda actual"})
+    return monthly_payment, amortization_schedule
+
+
+
+
+
 # Inicializa la base de datos para usuarios, gastos e ingresos
 # y fondos comunes
 db_users = TinyDB('usuarios.json')
@@ -317,11 +353,15 @@ st.title("Seguimiento de Gastos Personales")
 # Menú desplegable en la barra lateral
 if get_current_user() is not None:
     # Sidebar menu options for logged-in users
-    menu_option = st.sidebar.selectbox("Menú", ["Pagina Principal", "Registrar Gasto", "Registrar Ingreso", "Mostrar Gastos e Ingresos",
-                                                "Crear Fondo Común", "Fondos comunes","Descargar Gastos e Ingresos", "Cerrar Sesión"])
+    menu_option = st.sidebar.selectbox("Menú", ["Pagina Principal", "Registrar Gasto",
+                                                "Registrar Ingreso", "Mostrar Gastos e Ingresos",
+                                                "Crear Fondo Común", "Fondos comunes",
+                                                "Descargar Gastos e Ingresos", "Cerrar Sesión",
+                                                "Calculadora de Préstamos"])
 else:
     # Sidebar menu options for non-logged-in users
-    menu_option = st.sidebar.selectbox("Menú", ["Inicio", "Inicio de Sesion", "Registro","Conversion de Moneda"])
+    menu_option = st.sidebar.selectbox("Menú", ["Inicio", "Inicio de Sesion", "Registro","Conversion de Moneda",
+                                                "Calculadora de Préstamos"])
 
 # Si el usuario elige "Cerrar Sesión", restablecer la variable de sesión a None
 if menu_option == "Cerrar Sesión":
@@ -434,6 +474,32 @@ if get_current_user() is not None:
         st.header("Descarga Aca tus datos para tu gestion en Casa ¡Animate!")
         descargar_datos_excel(df)
 
+
+    if menu_option == "Calculadora de Préstamos":
+        st.write("Calculadora de Préstamos")
+        
+
+        interest_rate = st.number_input('Tasa de interés anual (%)',
+                                        min_value=0.01, value=5.0, step=0.01)
+        months = st.number_input('Número de meses', min_value=1,
+                                value=12, step=1)
+        loan_amount = st.number_input('Monto del préstamo',
+                                    min_value=1.0, value=1000.0, step=1.0)
+
+        if st.button('Calcular'):
+            monthly_payment, amortization_table = calculate_amortization(
+                interest_rate, months, loan_amount)
+            
+            st.subheader('Detalles del Préstamo')
+            st.write(f'Monto del préstamo: {loan_amount}')
+            st.write(f'Tasa de interés anual: {interest_rate}%')
+            st.write(f'Número de meses: {months}')
+            st.write(f'Cuota mensual: {monthly_payment:.2f}')
+            
+            st.subheader('Tabla de Amortización')
+            st.write(amortization_table)
+
+
 else:
 
     if menu_option == "Inicio":
@@ -478,6 +544,32 @@ else:
                 st.session_state.username = username  
             else:
                 st.error(message)
+
+
+    elif menu_option == "Calculadora de Préstamos":
+        st.write("Calculadora de Préstamos")
+        
+
+        interest_rate = st.number_input('Tasa de interés anual (%)',
+                                        min_value=0.01, value=5.0, step=0.01)
+        months = st.number_input('Número de meses', min_value=1,
+                                value=12, step=1)
+        loan_amount = st.number_input('Monto del préstamo',
+                                    min_value=1.0, value=1000.0, step=1.0)
+
+        if st.button('Calcular'):
+            monthly_payment, amortization_table = calculate_amortization(
+                interest_rate, months, loan_amount)
+            
+            st.subheader('Detalles del Préstamo')
+            st.write(f'Monto del préstamo: {loan_amount}')
+            st.write(f'Tasa de interés anual: {interest_rate}%')
+            st.write(f'Número de meses: {months}')
+            st.write(f'Cuota mensual: {monthly_payment:.2f}')
+            
+            st.subheader('Tabla de Amortización')
+            st.write(amortization_table)
+
     elif menu_option == "Registro":
         st.write("Registro de Usuario")
 
