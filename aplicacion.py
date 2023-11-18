@@ -371,7 +371,7 @@ def calculate_amortization(interest_rate, months, loan_amount):
 db_users = TinyDB('usuarios.json')
 db_data = TinyDB('data.json')
 db_us_fon_com = TinyDB('us_fon_com.json')
-db_his_fon_com = TinyDB('db_his_fon_com')
+db_his_fon_com = TinyDB('db_his_fon_com.json')
 # Inicializar la variable de sesión para el nombre de usuario
 if 'username' not in st.session_state:
     st.session_state.username = None
@@ -494,6 +494,7 @@ if get_current_user() is not None:
 
                 Users = Query()
                 username = st.session_state.username
+                #st.write(db_his_fon_com)
                 fon_hist = db_his_fon_com.search(
                 (Users.username == username) & (Users.fon_name == selected_fon))
                 df_his = pd.DataFrame(fon_hist[0]["historial"])
