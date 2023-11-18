@@ -327,7 +327,7 @@ def upd_his_fon(fon_elegido , miem, amount, description):
     # actualizamos en la base de datos la columna
     # members, sobreescribiendola con el diccionario
     # actualizado
-    db_us_fon_com.update({"historial": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
+    db_his_fon_com.update({"historial": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
     #st.success("Se ha registrado correctamente")
 
 
