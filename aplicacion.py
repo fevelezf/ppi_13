@@ -494,7 +494,7 @@ if get_current_user() is not None:
 
                 Users = Query()
                 username = st.session_state.username
-                #st.write(db_his_fon_com)
+                st.write(db_his_fon_com)
                 fon_hist = db_his_fon_com.search(
                 (Users.username == username) & (Users.fon_name == selected_fon))
                 df_his = pd.DataFrame(fon_hist[0]["historial"])
