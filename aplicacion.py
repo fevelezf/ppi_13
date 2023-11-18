@@ -248,7 +248,7 @@ def crear_fon_com(usernam, fon_name, members):
     # Insertamos en la base de datos la información necesaria
     # para crear almacenar el fondo
     db_us_fon_com.insert({"username": usernam, "fon_name": fon_name, "members": mem_dic})
-
+    db_his_fon_com.insert({"username": usernam, "fon_name": fon_name, "historial": []})
 
 def mostrar_fon_com(fon_elegido):
     """La función obtiene como parámetro de entrada
@@ -302,6 +302,35 @@ def upd_fon(fon_elegido , miem, amount):
     st.success("Se ha registrado correctamente")
 
 
+def upd_his_fon(fon_elegido , miem, amount, description):
+    """La función obtiene como primer parametro
+    el nombre de el fondo elegido el miembro al cual se
+    realizaran las modificaciones y por último el valor
+    a modificar"""
+
+    # Realizamos la búsqueda en la base de datos con las
+    # dos llaves que vuelven única la busqueda, que son el 
+    # username del usuario y el nombre de el fondo elegido
+    User = Query()
+    username = st.session_state.username
+    fon_data = db_his_fon_com.search(
+        (User.username == username) & (User.fon_name == fon_elegido))
+    
+    # Accedemos a los miembros de el fondo común
+    # para poder actualizar el dato deseado
+    data_act = fon_data[0]["historial"]
+    # Actualizamos en el diccionario el dato deseado
+    data_act.append({"Miembro": miem, "Monto": amount,
+                     "Descripción": description})
+
+    # Luego de hacer el query requerido
+    # actualizamos en la base de datos la columna
+    # members, sobreescribiendola con el diccionario
+    # actualizado
+    db_us_fon_com.update({"historial": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
+    #st.success("Se ha registrado correctamente")
+
+
 def calculate_amortization(interest_rate, months, loan_amount):
     # Calculating the monthly interest rate
     monthly_interest_rate = interest_rate / 12 / 100
@@ -342,7 +371,7 @@ def calculate_amortization(interest_rate, months, loan_amount):
 db_users = TinyDB('usuarios.json')
 db_data = TinyDB('data.json')
 db_us_fon_com = TinyDB('us_fon_com.json')
-
+db_his_fon_com = TinyDB('db_his_fon_com')
 # Inicializar la variable de sesión para el nombre de usuario
 if 'username' not in st.session_state:
     st.session_state.username = None
@@ -461,10 +490,19 @@ if get_current_user() is not None:
                 lista = fon_data[0]["members"].keys()
                 miem = st.selectbox('Seleccione el miembro', lista)
                 amount = st.number_input('Ingresa la cantidad que deseas añadir o retirar', min_value=1.0, step=1.0)
+                description = st.text_input("Añada una descripción para el historial")
+
+                Users = Query()
+                username = st.session_state.username
+                fon_hist = db_us_fon_com.search(
+                (Users.username == username) & (Users.fon_name == selected_fon))
+                df_his = pd.DataFrame(fon_hist[0]["historial"])
+                st.write(df_his)
 
             if st.button("Actualizar"):
                 upd_fon(selected_fon, miem, amount)
-
+                upd_his_fon(selected_fon, miem, amount, description)
+            
 
         else:
             st.write("Aún no tienes un fondo común, \
