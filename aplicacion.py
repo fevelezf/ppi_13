@@ -246,7 +246,7 @@ def crear_fon_com(usernam, fon_name, members):
     mem_dic = dict(zip(members, [0] * len(members)))
     
     # Insertamos en la base de datos la información necesaria
-    # para crear almacenar el fondo
+    # para crear el fondo común y su historial
     db_us_fon_com.insert({"username": usernam, "fon_name": fon_name, "members": mem_dic})
     db_his_fon_com.insert({"username": usernam, "fon_name": fon_name, "historial": []})
 
@@ -304,9 +304,9 @@ def upd_fon(fon_elegido , miem, amount):
 
 def upd_his_fon(fon_elegido , miem, amount, description):
     """La función obtiene como primer parametro
-    el nombre de el fondo elegido el miembro al cual se
-    realizaran las modificaciones y por último el valor
-    a modificar"""
+    el nombre de el fondo elegido, el valor
+    a modificar y la descripción que se guardará
+    en el historial"""
 
     # Realizamos la búsqueda en la base de datos con las
     # dos llaves que vuelven única la busqueda, que son el 
@@ -319,16 +319,16 @@ def upd_his_fon(fon_elegido , miem, amount, description):
     # Accedemos a los miembros de el fondo común
     # para poder actualizar el dato deseado
     data_act = fon_data[0]["historial"]
-    # Actualizamos en el diccionario el dato deseado
+    # Agregamos en um diccionario el dato deseado
     data_act.append({"Miembro": miem, "Monto": amount,
                      "Descripción": description})
 
     # Luego de hacer el query requerido
     # actualizamos en la base de datos la columna
-    # members, sobreescribiendola con el diccionario
-    # actualizado
+    # historial, sobreescribiendola la lista
+    # actualizada
     db_his_fon_com.update({"historial": data_act}, ((User.username == username) & (User.fon_name == fon_elegido)))
-    #st.success("Se ha registrado correctamente")
+
 
 
 def calculate_amortization(interest_rate, months, loan_amount):
@@ -494,7 +494,6 @@ if get_current_user() is not None:
 
                 Users = Query()
                 username = st.session_state.username
-                st.write(db_his_fon_com)
                 fon_hist = db_his_fon_com.search(
                 (Users.username == username) & (Users.fon_name == selected_fon))
                 df_his = pd.DataFrame(fon_hist[0]["historial"])
