@@ -567,13 +567,13 @@ else:
     
     # Inicio de sesión
     elif menu_option == "Inicio de Sesion":
-        colum1, colum2 = st.columns(2)
         st.write("Bienvenido al inicio de la aplicación.")
 
         # Campos de inicio de sesión
         username = st.text_input("Nombre de Usuario:")
         password = st.text_input("Contraseña:", type="password")
-
+        
+        colum1, colum2 = st.columns(2)
         if colum1.button("Iniciar Sesión"):
             login_successful, message = verificar_credenciales(username, password)
             if login_successful:
