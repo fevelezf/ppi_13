@@ -570,7 +570,7 @@ else:
         st.write("Bienvenido al inicio de la aplicación.")
 
         # Campos de inicio de sesión
-        username = st.text_input("Nombre de Usuario:")
+        username = st.text_input("Nickname:")
         password = st.text_input("Contraseña:", type="password")
         
         colum1, colum2 = st.columns(2)
@@ -644,7 +644,7 @@ else:
         first_name = st.text_input("Nombre del Usuario:")
         last_name = st.text_input("Apellidos del Usuario:")
         email = st.text_input("Correo electronico del Usuario:")
-        new_username = st.text_input("Nuevo Nombre de Usuario:")
+        new_username = st.text_input("Nickname:")
         new_password = st.text_input("Nueva Contraseña:", type = "password")
         confirm_password = st.text_input("Confirmar contraseña:", type = "password")
 
