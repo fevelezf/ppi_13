@@ -12,7 +12,6 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 #from forex_python.converter import CurrencyRates
 
-
 # Cargar el CSS personalizado
 with open("custom.css") as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
@@ -321,7 +320,7 @@ def upd_his_fon(fon_elegido , miem, amount, description):
     data_act = fon_data[0]["historial"]
     # Agregamos en um diccionario el dato deseado
     data_act.append({"Miembro": miem, "Monto": amount,
-                     "Descripción": description})
+                    "Descripción": description})
 
     # Luego de hacer el query requerido
     # actualizamos en la base de datos la columna
@@ -341,7 +340,7 @@ def calculate_amortization(interest_rate, months, loan_amount):
     # Creating a DataFrame for the amortization schedule
     amortization_schedule = pd.DataFrame(
         columns=['Month','Payment', 'Principal',
-                 'Interest', 'Remaining Balance'])
+                'Interest', 'Remaining Balance'])
     remaining_balance = loan_amount
     
     for month in range(1, months + 1):
@@ -358,8 +357,8 @@ def calculate_amortization(interest_rate, months, loan_amount):
         }, ignore_index=True)
 
     amortization_schedule.rename({"Month": "Mes", "Payment": "Pago",
-                                  "Pricipal": "Abono a deuda", "Interest": "Abono a interes",
-                                  "remaining_balance": "Deuda actual"})
+                                "Pricipal": "Abono a deuda", "Interest": "Abono a interes",
+                                "remaining_balance": "Deuda actual"})
     return monthly_payment, amortization_schedule
 
 
@@ -580,9 +579,9 @@ else:
                 st.success(message)
                 # Almacenar el nombre de usuario en la sesión
                 st.session_state.username = username  
-            else:
+            elif login_successful:
                 st.error(message)
-
+            
 
     elif menu_option == "Calculadora de Préstamos":
         st.write("Calculadora de Préstamos")
@@ -637,6 +636,7 @@ else:
                     st.session_state.politica_vista = True
                 # Casilla de verificación para aceptar la política
         aceptar_politica = st.checkbox("Acepta la política de datos personales")
+
         # Botón de registro de usuario en la primera columna
         if col1.button("Registrarse") and aceptar_politica and st.session_state.politica_vista:
             registration_successful, message = registrar_usuario(new_username, new_password, first_name, last_name, email, confirm_password)
