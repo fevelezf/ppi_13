@@ -585,24 +585,22 @@ else:
                 st.error(message)
 
         elif colum2.button("Olvidaste la contraseña"):
-            try:
-                if username is not None:
-                    User = Query()
-                    user_info = db_users.get(User.username == username)
+            if username is not None:
+                User = Query()
+                user_info = db_users.get(User.username == username)
 
-                    email_recuperar = user_info['email']
-                    contraseña_recuperar = user_info['password']
-                    nombre = user_info['first_name']
-                    destinatario = email_recuperar  
-                    asunto = 'Recuperacion de Contraseña'
-                    cuerpo = (f'Hola {nombre} ,  Te enviamos este correo para recordarte la contraseña\n\n Usuario : {username} \n\n Contraseña : {contraseña_recuperar}  ')
+                email_recuperar = user_info['email']
+                contraseña_recuperar = user_info['password']
+                nombre = user_info['first_name']
+                destinatario = email_recuperar  
+                asunto = 'Recuperacion de Contraseña'
+                cuerpo = (f'Hola {nombre} ,  Te enviamos este correo para recordarte la contraseña\n\n Usuario : {username} \n\n Contraseña : {contraseña_recuperar}  ')
 
-                    enviar_correo(destinatario, asunto, cuerpo)
-                    st.success('Mensaje enviado con exito al correo registrado')
+                enviar_correo(destinatario, asunto, cuerpo)
+                st.success('Mensaje enviado con exito al correo registrado')
 
-            except:
+            else:
                 st.warning('Ingresa el nombre del usuario')
-
 
 
             
