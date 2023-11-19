@@ -585,32 +585,33 @@ else:
                 st.error(message)
 
         elif colum2.button("Olvidaste la contraseña"):
+            with st.sidebar.form("forgot_password_form"):
 
-            st.write("Olvidaste tu Contraseña")
+                st.write("Olvidaste tu Contraseña")
 
-            # Campos para ingresar el nombre de usuario y el correo electrónico
-            username_forgot = st.text_input("Nombre de Usuario:", key="username_forgot")
-            email_forgot = st.text_input("Correo Electrónico:")
+                # Campos para ingresar el nombre de usuario y el correo electrónico
+                username_forgot = st.text_input("Nombre de Usuario:", key="username_forgot")
+                email_forgot = st.text_input("Correo Electrónico:")
 
-            if st.button("Enviar Correo de Restablecimiento"):
-                # Verifica si el usuario y el correo coinciden en la base de datos
-                User = Query()
-                user_info = db_users.get((User.username == username_forgot) & (User.email == email_forgot))
+                if st.form_submit_button("Enviar Correo de Restablecimiento"):
+                    # Verifica si el usuario y el correo coinciden en la base de datos
+                    User = Query()
+                    user_info = db_users.get((User.username == username_forgot) & (User.email == email_forgot))
 
-                if user_info:
-                    # Recupera la contraseña existente del usuario
-                    contrasena_actual = user_info['password']
+                    if user_info:
+                        # Recupera la contraseña existente del usuario
+                        contrasena_actual = user_info['password']
 
-                    # Envia un correo electrónico con la contraseña existente
-                    destinatario = email_forgot
-                    asunto = 'Recuperación de Contraseña - Finanzapp'
-                    cuerpo = f'Tu contraseña actual es: {contrasena_actual}.\n\nRecuerdala, Recuerda que es personal e intransferible'
+                        # Envia un correo electrónico con la contraseña existente
+                        destinatario = email_forgot
+                        asunto = 'Recuperación de Contraseña - Finanzapp'
+                        cuerpo = f'Tu contraseña actual es: {contrasena_actual}.\n\nRecuerdala, Recuerda que es personal e intransferible'
 
-                    enviar_correo(destinatario, asunto, cuerpo)
+                        enviar_correo(destinatario, asunto, cuerpo)
 
-                    st.success("Se ha enviado un correo con tu contraseña actual.")
-                else:
-                    st.error("El usuario o el correo electrónico no existen en la base de datos..")
+                        st.success("Se ha enviado un correo con tu contraseña actual.")
+                    else:
+                        st.error("El usuario o el correo electrónico no existen en la base de datos..")
             
 
     elif menu_option == "Calculadora de Préstamos":
