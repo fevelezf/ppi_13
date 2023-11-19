@@ -593,11 +593,11 @@ else:
                 contraseña_recuperar = user_info['password']
                 nombre = user_info['first_name']
                 destinatario = email_recuperar  
-                asunto = 'Rcuperacion de Contraseña'
+                asunto = 'Recuperacion de Contraseña'
                 cuerpo = (f'Hola {nombre} ,  Te enviamos este correo para recordarte la contraseña\n\n Usuario : {username} \n\n Contraseña : {contraseña_recuperar}  ')
 
                 enviar_correo(destinatario, asunto, cuerpo)
-                st.success('Mensaje encviado con exito al correo registrado')
+                st.success('Mensaje enviado con exito al correo registrado')
 
             else:
                 st.warning('Ingresa el nombre del usuario')
