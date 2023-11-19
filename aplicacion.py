@@ -585,33 +585,24 @@ else:
                 st.error(message)
 
         elif colum2.button("Olvidaste la contraseña"):
-            with st.form("forgot_password_form"):
+            if username is not None:
+                User = Query()
+                user_info = db_users.get(User.username == username)
 
-                st.write("Olvidaste tu Contraseña")
+                email_recuperar = user_info['email']
+                contraseña_recuperar = user_info['password']
 
-                # Campos para ingresar el nombre de usuario y el correo electrónico
-                username_forgot = st.text_input("Nombre de Usuario:", key="username_forgot")
-                email_forgot = st.text_input("Correo Electrónico:")
+                destinatario = email_recuperar  
+                asunto = 'Rcuperacion de Contraseña'
+                cuerpo = (f'Hola {user_info['first_name']} ,  Te enviamos este correo para recordarte la contraseña\n\n Usuario : {username} \n\n Contraseña : {contraseña_recuperar}  ')
 
-                if st.form_submit_button("Enviar Correo de Restablecimiento"):
-                    # Verifica si el usuario y el correo coinciden en la base de datos
-                    User = Query()
-                    user_info = db_users.get((User.username == username_forgot) & (User.email == email_forgot))
+                enviar_correo(destinatario, asunto, cuerpo)
+                st.success('Mensaje encviado con exito al correo registrado')
 
-                    if user_info:
-                        # Recupera la contraseña existente del usuario
-                        contrasena_actual = user_info['password']
+            else:
+                st.warning('Ingresa el nombre del usuario')
 
-                        # Envia un correo electrónico con la contraseña existente
-                        destinatario = email_forgot
-                        asunto = 'Recuperación de Contraseña - Finanzapp'
-                        cuerpo = f'Tu contraseña actual es: {contrasena_actual}.\n\nRecuerdala, Recuerda que es personal e intransferible'
 
-                        enviar_correo(destinatario, asunto, cuerpo)
-
-                        st.success("Se ha enviado un correo con tu contraseña actual.")
-                    else:
-                        st.error("El usuario o el correo electrónico no existen en la base de datos..")
             
 
     elif menu_option == "Calculadora de Préstamos":
