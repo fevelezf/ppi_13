@@ -589,7 +589,7 @@ else:
             st.write("Olvidaste tu Contraseña")
 
             # Campos para ingresar el nombre de usuario y el correo electrónico
-            username_forgot = st.text_input("Nombre de Usuario:")
+            username_forgot = st.text_input("Nombre de Usuario:", key="username_forgot")
             email_forgot = st.text_input("Correo Electrónico:")
 
             if st.button("Enviar Correo de Restablecimiento"):
