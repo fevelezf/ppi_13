@@ -585,7 +585,7 @@ else:
                 st.error(message)
 
         elif colum2.button("Olvidaste la contraseña"):
-            with st.sidebar.form("forgot_password_form"):
+            with st.form("forgot_password_form"):
 
                 st.write("Olvidaste tu Contraseña")
 
