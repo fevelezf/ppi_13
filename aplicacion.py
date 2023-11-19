@@ -579,7 +579,7 @@ else:
                 st.success(message)
                 # Almacenar el nombre de usuario en la sesión
                 st.session_state.username = username  
-                
+
             elif not login_successful:
                 st.error(message)
 
@@ -609,7 +609,7 @@ else:
 
                         st.success("Se ha enviado un correo con tu contraseña actual.")
                     else:
-                        st.error("El usuario o el correo electrónico no existen en la base de datos.")
+                        st.error("El usuario o el correo electrónico no existen en la base de datos..")
             
 
     elif menu_option == "Calculadora de Préstamos":
