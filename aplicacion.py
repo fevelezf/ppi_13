@@ -10,6 +10,7 @@ import smtplib
 import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from deta import Deta
 
 
 # Cargar el CSS personalizado
@@ -363,11 +364,15 @@ def calculate_amortization(interest_rate, months, loan_amount):
 
 
 
+# Almacenamos la key de la base de datos en una constante
+DETA_KEY = "e06kr4x8fgt_kRLB6QgPJxeM13wUD3TXQzPmMfJHYuP6"
 
+# Creamos nuestro objeto deta para hacer la conexion a la DB
+deta = Deta(DETA_KEY)
 
 # Inicializa la base de datos para usuarios, gastos e ingresos
 # y fondos comunes
-db_users = TinyDB('usuarios.json')
+db_users = deta.Base("usuarios")
 db_data = TinyDB('data.json')
 db_us_fon_com = TinyDB('us_fon_com.json')
 db_his_fon_com = TinyDB('db_his_fon_com.json')
