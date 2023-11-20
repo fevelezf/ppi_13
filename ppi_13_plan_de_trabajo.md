@@ -37,10 +37,10 @@
 # Informe 06
 | Tarea | Descripción | Responsable | Cumplimiento |
 |-------|-------------|-------------|--------------|
-| 1     | Se Optimizara la aplicación con las características esperadas | Sebastian | Pendiente |
-| 2     | Se mejoraran aspectos | Felipe | Pendiente |
-| 3     | Se procedera a mandar notificaiones via e-Mail | Felipe | Pendiente |
-| 4    | Se corregirán los errores encontrados | Felipe y Sebastian | Pendiente |
+| 1     | Se Optimizara la aplicación con las características esperadas | Sebastian | OK|
+| 2     | Se mejoraran aspectos | Felipe | OK |
+| 3     | Se procedera a mandar notificaiones via e-Mail | Felipe | OK |
+| 4    | Se corregirán los errores encontrados | Felipe y Sebastian | OK |
 
 # Informe 07
 | Tarea | Descripción | Responsable | Cumplimiento |
