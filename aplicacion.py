@@ -20,19 +20,19 @@ with open("custom.css") as f:
 
 # Función para crear un gráfico de barras por categorías de gastos e ingresos (Sebastian)
 def crear_grafico_barras_categorias():
-    '''Esta funcion realiza un gráfico de barras de la 
+    '''Esta función realiza un gráfico de barras de la 
     gastos sumatoria de ingresos por categoria que
     haya tenido el usuario
     '''
-    User = Query()
     username = st.session_state.username
-    user_data = db_data.search(User.username == username)
+    user_data = db_data.fetch({"username": username})
 
     # Filtrar datos de gastos e ingresos
     categorias_gastos = {}
     categorias_ingresos = {}
 
-    for d in user_data:
+    for d in user_data.items:
+        d = d["value"]
         if d['Tipo'] == 'Gasto':
             categoria = d['Categoría']
             monto = d['Monto']
@@ -376,7 +376,7 @@ deta = Deta(DETA_KEY)
 # Inicializa la base de datos para usuarios, gastos e ingresos
 # y fondos comunes
 db_users = deta.Base("usuarios")
-db_data = TinyDB('data.json')
+db_data = deta.Base("data")
 db_us_fon_com = TinyDB('us_fon_com.json')
 db_his_fon_com = TinyDB('db_his_fon_com.json')
 # Inicializar la variable de sesión para el nombre de usuario
