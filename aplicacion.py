@@ -25,7 +25,7 @@ def crear_grafico_barras_categorias():
     haya tenido el usuario
     '''
     username = st.session_state.username
-    user_data = db_data.fetch({"username": username})
+    user_data = db_data.fetch({"key": username})
 
     # Filtrar datos de gastos e ingresos
     categorias_gastos = {}
@@ -121,7 +121,7 @@ def crear_grafico_barras_gastos_ingresos():
     de gastos e ingresos que haya tenido el usuario
     '''
     username = st.session_state.username
-    user_data = db_data.fetch({"username": username})
+    user_data = db_data.fetch({"key": username})
 
     # Filtrar datos de gastos e ingresos
     gastos = [d['Monto'] for d in user_data.items if d['Tipo'] == 'Gasto']
@@ -185,7 +185,7 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
     '''
     User = Query()
     # Verifica si el usuario ya existe en la base de datos
-    users = db_users.fetch({"username": username})
+    users = db_users.fetch({"key": username})
     
     # Si hay algún resultado, significa que el usuario ya existe
     if users.count > 0:
@@ -196,7 +196,7 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
         return False, "Las contraseñas no coinciden. Por favor, vuelva a intentar."
 
     # Agrega el nuevo usuario a la base de datos
-    db_users.put({'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
+    db_users.put({"key": username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
 
     return True, "Registro exitoso. Ahora puede iniciar sesión."
 
@@ -207,7 +207,7 @@ def verificar_credenciales(username, password):
     sean inguales para permitir el ingreso al sistema
     '''
     # Busca el usuario en la base de datos
-    user = db_users.fetch({"username": username, "password": password})
+    user = db_users.fetch({"key": username, "password": password})
     
     if user.count > 0:
         return True, "Inicio de sesión exitoso."
@@ -222,7 +222,7 @@ def mostrar_gastos_ingresos():
     '''
     username = st.session_state.username
     User = Query()
-    user_data = db_data.fetch({"username": username})
+    user_data = db_data.fetch({"key": username})
     st.write(f"Gastos e Ingresos de {username}:")
 
     # Convierte los datos en un DataFrame de pandas
@@ -366,7 +366,7 @@ def calculate_amortization(interest_rate, months, loan_amount):
 def display_user_summary(username):
     '''Esta función muestra un resumen de gastos e ingresos para el usuario dado'''
     User = Query()
-    user_data = db_data.fetch({"username": username})
+    user_data = db_data.fetch({"key": username})
 
     # Calcular gastos e ingresos totales
     gastos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Gasto')
@@ -389,7 +389,7 @@ db_data = deta.Base("data")
 db_us_fon_com = TinyDB('us_fon_com.json')
 db_his_fon_com = TinyDB('db_his_fon_com.json')
 # Inicializar la variable de sesión para el nombre de usuario
-if 'username' not in st.session_state:
+if "key" not in st.session_state:
     st.session_state.username = None
 
 # Título de la aplicación
@@ -431,7 +431,7 @@ if get_current_user() is not None:
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
                 username = st.session_state.username
-                db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Gasto', 'Categoría': categoria_gastos, 'Monto': monto})
+                db_data.put({"key": username, 'Fecha': str(fecha), 'Tipo': 'Gasto', 'Categoría': categoria_gastos, 'Monto': monto})
                 st.success("Gasto registrado exitosamente.")
                 # Limpiar los campos después de registrar el gasto
                 fecha = ""
@@ -512,7 +512,7 @@ if get_current_user() is not None:
 
     if menu_option == "Descargar Gastos e Ingresos":
         st.header("Descarga Aca tus datos para tu gestion en Casa ¡Animate!")
-        user_data = db_data.fetch({"username": st.session_state.username})
+        user_data = db_data.fetch({"key": st.session_state.username})
         df = pd.DataFrame(user_data.items)
         descargar_datos_excel(df)
 
