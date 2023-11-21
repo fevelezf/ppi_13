@@ -187,11 +187,10 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
     '''
     User = Query()
     # Verifica si el usuario ya existe en la base de datos
-    # Realiza una búsqueda en la colección para verificar si el usuario ya existe
-    resultado = db_users.fetch(User.username == username)
-
+    users = db_users.fetch({"username": username})
+    
     # Si hay algún resultado, significa que el usuario ya existe
-    if resultado.count > 0:
+    if users.count > 0:
         return False, "El usuario ya existe. Por favor, elija otro nombre de usuario."
 
     # Verifica si las contraseñas coinciden
