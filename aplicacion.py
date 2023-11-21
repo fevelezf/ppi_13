@@ -512,6 +512,8 @@ if get_current_user() is not None:
 
     if menu_option == "Descargar Gastos e Ingresos":
         st.header("Descarga Aca tus datos para tu gestion en Casa ¡Animate!")
+        user_data = db_data.fetch({"username": st.session_state.username})
+        df = pd.DataFrame(user_data.items)
         descargar_datos_excel(df)
 
 
