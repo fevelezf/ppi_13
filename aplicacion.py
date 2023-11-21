@@ -188,7 +188,10 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
     User = Query()
     # Verifica si el usuario ya existe en la base de datos
     # Realiza una búsqueda en la colección para verificar si el usuario ya existe
-    resultado = db_users.fetch(User.username == username)
+    try:
+        resultado = db_users.fetch(User.username == username)
+    except Exception as e:
+        st.warning(f"Error al realizar la búsqueda en Deta: {e}")
 
     # Si hay algún resultado, significa que el usuario ya existe
     if resultado.count > 0:
