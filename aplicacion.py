@@ -195,7 +195,7 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
         return False, "Las contraseñas no coinciden. Por favor, vuelva a intentar."
 
     # Agrega el nuevo usuario a la base de datos
-    db_users.put{'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
+    db_users.put({'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
 
     return True, "Registro exitoso. Ahora puede iniciar sesión."
 
