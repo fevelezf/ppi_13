@@ -366,16 +366,21 @@ def calculate_amortization(interest_rate, months, loan_amount):
 def display_user_summary(username):
     '''Esta función muestra un resumen de gastos e ingresos para el usuario dado'''
 
-    user_data = db_data.fetch({"username": username})
-
     try:
-        # Calcular gastos e ingresos totales
-        gastos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Gasto')
-        ingresos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso')
+        username = st.session_state.username
+        user_data = db_data.fetch({"username": username})
+
+        # Filtrar datos de gastos e ingresos
+        gastos = [d['Monto'] for d in user_data.items if d['Tipo'] == 'Gasto']
+        ingresos = [d['Monto'] for d in user_data.items if d['Tipo'] == 'Ingreso']
+
+        # Calcular el total de gastos e ingresos
+        total_gastos = sum(gastos)
+        total_ingresos = sum(ingresos)
 
         # Mostrar el resumen
-        st.write(f"<h4 style='font-size: 26px;'>En total te has gastado: {gastos}</h4>", unsafe_allow_html=True)
-        st.write(f"<h4 style='font-size: 26px;'>Has tenido unos ingresos por el valor de: {ingresos}</h4>", unsafe_allow_html=True)
+        st.write(f"<h4 style='font-size: 26px;'>En total te has gastado: {total_gastos}</h4>", unsafe_allow_html=True)
+        st.write(f"<h4 style='font-size: 26px;'>Has tenido unos ingresos por el valor de: {total_ingresos}</h4>", unsafe_allow_html=True)
 
     except Exception as e:
         # Mostrar un mensaje de advertencia junto con detalles de la excepción
