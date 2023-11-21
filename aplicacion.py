@@ -188,10 +188,7 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
     User = Query()
     # Verifica si el usuario ya existe en la base de datos
     # Realiza una búsqueda en la colección para verificar si el usuario ya existe
-    try:
-        resultado = db_users.fetch(User.key == username)
-    except Exception as e:
-        st.warning(f"Error al realizar la búsqueda en Deta: {e}")
+    resultado = db_users.fetch(User.username == username)
 
     # Si hay algún resultado, significa que el usuario ya existe
     if resultado.count > 0:
@@ -202,7 +199,7 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
         return False, "Las contraseñas no coinciden. Por favor, vuelva a intentar."
 
     # Agrega el nuevo usuario a la base de datos
-    db_users.put({'key': username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
+    db_users.put({'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
 
     return True, "Registro exitoso. Ahora puede iniciar sesión."
 
