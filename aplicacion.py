@@ -365,17 +365,20 @@ def calculate_amortization(interest_rate, months, loan_amount):
 
 def display_user_summary(username):
     '''Esta función muestra un resumen de gastos e ingresos para el usuario dado'''
-    User = Query()
+
     user_data = db_data.fetch({"username": username})
 
-    # Calcular gastos e ingresos totales
-    gastos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Gasto')
-    ingresos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso')
+    try:
+        # Calcular gastos e ingresos totales
+        gastos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Gasto')
+        ingresos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso')
 
-    # Mostrar el resumen
-    st.write(f"<h4 style='font-size: 26px;'>En total te has gastado: {gastos}</h4>", unsafe_allow_html=True)
-    st.write(f"<h4 style='font-size: 26px;'>Has tenido unos ingresos por el valor de: {ingresos}</h4>", unsafe_allow_html=True)
+        # Mostrar el resumen
+        st.write(f"<h4 style='font-size: 26px;'>En total te has gastado: {gastos}</h4>", unsafe_allow_html=True)
+        st.write(f"<h4 style='font-size: 26px;'>Has tenido unos ingresos por el valor de: {ingresos}</h4>", unsafe_allow_html=True)
 
+    except:
+        st.warning('Te invitamos a registrar gastos e ingresos')
 # Almacenamos la key de la base de datos en una constante
 DETA_KEY = "e06kr4x8fgt_kRLB6QgPJxeM13wUD3TXQzPmMfJHYuP6"
 
