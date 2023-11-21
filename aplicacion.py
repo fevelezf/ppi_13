@@ -187,8 +187,8 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
     '''
     User = Query()
     # Verifica si el usuario ya existe en la base de datos
-    if db_users.search(User.username == username):
-        return False, "El usuario ya existe. Por favor, elija otro nombre de usuario."
+    '''if db_users.search(User.username == username):
+        return False, "El usuario ya existe. Por favor, elija otro nombre de usuario."'''
 
     # Verifica si las contraseñas coinciden
     if password != confirm_password:
