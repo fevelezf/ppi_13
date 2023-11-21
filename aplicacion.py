@@ -32,7 +32,6 @@ def crear_grafico_barras_categorias():
     categorias_ingresos = {}
 
     for d in user_data.items:
-        d = d["value"]
         if d['Tipo'] == 'Gasto':
             categoria = d['Categoría']
             monto = d['Monto']
