@@ -208,10 +208,10 @@ def verificar_credenciales(username, password):
     '''Esta funcion recibe como argumento el username y el password y verifica que
     sean inguales para permitir el ingreso al sistema
     '''
-    User = Query()
     # Busca el usuario en la base de datos
-    user = db_users.get((User.username == username) & (User.password == password))
-    if user:
+    user = db_users.fetch({"username": username, "password": password})
+    
+    if user.count > 0:
         return True, "Inicio de sesión exitoso."
     else:
         return False, "Credenciales incorrectas. Por favor, verifique su nombre de usuario y contraseña."
