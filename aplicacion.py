@@ -118,26 +118,25 @@ def enviar_correo(destinatario, asunto, cuerpo):
 
 # Función para crear un gráfico de torta de gastos e ingresos (Sebastian)
 def crear_grafico_barras_gastos_ingresos():
-    '''Esta funcion realiza un gráfico de barras de de la sumatoria
+    '''Esta función realiza un gráfico de barras de la sumatoria
     de gastos e ingresos que haya tenido el usuario
     '''
-    User= Query()
     username = st.session_state.username
-    user_data = db_data.search(User.username == username)
-    
+    user_data = db_data.fetch({"username": username})
+
     # Filtrar datos de gastos e ingresos
-    gastos = [d['Monto'] for d in user_data if d['Tipo'] == 'Gasto']
-    ingresos = [d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso']
-    
+    gastos = [d['Monto'] for d in user_data.items if d['Tipo'] == 'Gasto']
+    ingresos = [d['Monto'] for d in user_data.items if d['Tipo'] == 'Ingreso']
+
     # Calcular el total de gastos e ingresos
     total_gastos = sum(gastos)
     total_ingresos = sum(ingresos)
-    
+
     # Crear el gráfico de barras
     labels = ['Gastos', 'Ingresos']
     values = [total_gastos, total_ingresos]
     colors = ['red', 'green']
-    
+
     fig, ax = plt.subplots()
     ax.bar(labels, values, color=colors)
     ax.set_ylabel('Porcentaje')
@@ -219,16 +218,16 @@ def verificar_credenciales(username, password):
 
 # Función para mostrar los gastos e ingresos del usuario actual
 def mostrar_gastos_ingresos():
-    '''Esta funcion hace un filtrado en db_data segun el usuario en ese momento y 
+    '''Esta función hace un filtrado en db_data según el usuario en ese momento y 
     muestra los gastos e ingresos
     '''
     username = st.session_state.username
     User = Query()
-    user_data = db_data.search(User.username == username)
+    user_data = db_data.fetch({"username": username})
     st.write(f"Gastos e Ingresos de {username}:")
 
     # Convierte los datos en un DataFrame de pandas
-    df = pd.DataFrame(user_data)
+    df = pd.DataFrame(user_data.items)
 
     # Muestra el DataFrame en forma de tabla
     st.write(df)
@@ -365,7 +364,18 @@ def calculate_amortization(interest_rate, months, loan_amount):
                                 "remaining_balance": "Deuda actual"})
     return monthly_payment, amortization_schedule
 
+def display_user_summary(username):
+    '''Esta función muestra un resumen de gastos e ingresos para el usuario dado'''
+    User = Query()
+    user_data = db_data.fetch({"username": username})
 
+    # Calcular gastos e ingresos totales
+    gastos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Gasto')
+    ingresos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso')
+
+    # Mostrar el resumen
+    st.write(f"<h4 style='font-size: 26px;'>En total te has gastado: {gastos}</h4>", unsafe_allow_html=True)
+    st.write(f"<h4 style='font-size: 26px;'>Has tenido unos ingresos por el valor de: {ingresos}</h4>", unsafe_allow_html=True)
 
 # Almacenamos la key de la base de datos en una constante
 DETA_KEY = "e06kr4x8fgt_kRLB6QgPJxeM13wUD3TXQzPmMfJHYuP6"
@@ -407,24 +417,10 @@ if menu_option == "Cerrar Sesión":
 # Si el usuario ya ha iniciado sesión, mostrar los botones
 if get_current_user() is not None:
     username = st.session_state.username
-    User = Query()
-    user_data = db_data.search(User.username == username)
-    # Convierte los datos en un DataFrame de pandas
-    df = pd.DataFrame(user_data)
+
     if menu_option == "Pagina Principal":
-        username = get_current_user()
         st.write(f'<h4 style="font-size: 26px; font-weight: bold; text-align: center;">Hola {username}!</h4>', unsafe_allow_html=True)
-
-        # Calculate total expenses and income for the user
-        User = Query()
-        user_data = db_data.search(User.username == username)
-        gastos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Gasto')
-        ingresos = sum(d['Monto'] for d in user_data if d['Tipo'] == 'Ingreso')
-
-        # Display the total expenses and income
-        st.write(f"<h4 style='font-size: 26px;'>En total te has gastado: {gastos}</h4>", unsafe_allow_html=True)
-        st.write(f"<h4 style='font-size: 26px;'>Has tenido unos ingresos por el valor de: {ingresos}</h4>", unsafe_allow_html=True)
-
+        display_user_summary(username)
 
     # Botones para registrar gasto, ingreso o ver registros
     if menu_option == "Registrar Gasto":
@@ -436,7 +432,7 @@ if get_current_user() is not None:
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
                 username = st.session_state.username
-                db_data.insert({'username': username, 'Fecha': str(fecha), 'Tipo': 'Gasto', 'Categoría': categoria_gastos, 'Monto': monto})
+                db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Gasto', 'Categoría': categoria_gastos, 'Monto': monto})
                 st.success("Gasto registrado exitosamente.")
                 # Limpiar los campos después de registrar el gasto
                 fecha = ""
@@ -453,7 +449,7 @@ if get_current_user() is not None:
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
                 username = st.session_state.username
-                db_data.insert({'username': username, 'Fecha': str(fecha), 'Tipo': 'Ingreso', 'Categoría': categoria_ingresos, 'Monto': monto})
+                db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Ingreso', 'Categoría': categoria_ingresos, 'Monto': monto})
                 st.success("Ingreso registrado exitosamente.")
 
     if menu_option == "Mostrar Gastos e Ingresos":
