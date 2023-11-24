@@ -196,7 +196,8 @@ def registrar_usuario(username, password, first_name, last_name, email, confirm_
         return False, "Las contraseñas no coinciden. Por favor, vuelva a intentar."
 
     # Agrega el nuevo usuario a la base de datos
-    db_users.put({'username': username, 'password': password, 'first_name': first_name, 'last_name': last_name, 'email': email})
+    db_users.put({'username': username, 'password': password, 'first_name': first_name,
+                'last_name': last_name, 'email': email})
 
     return True, "Registro exitoso. Ahora puede iniciar sesión."
 
@@ -429,7 +430,8 @@ if get_current_user() is not None:
     username = st.session_state.username
 
     if menu_option == "Pagina Principal":
-        st.write(f'<h4 style="font-size: 26px; font-weight: bold; text-align: center;">Hola {username}!</h4>', unsafe_allow_html=True)
+        st.write(f'<h4 style="font-size: 26px; font-weight: bold; text-align: center;">Hola {username}!</h4>',
+                unsafe_allow_html=True)
         display_user_summary(username)
 
     # Botones para registrar gasto, ingreso o ver registros
@@ -438,11 +440,15 @@ if get_current_user() is not None:
         with st.form("registrar_gasto_form"):
             fecha = st.date_input("Fecha del Gasto")
             # Cambiar el campo de texto por un menú desplegable para la categoría
-            categoria_gastos = st.selectbox("Seleccione la categoría:", ["Alimentación", "Cuentas y pagos", "Casa", "Transporte", "Ropa", "Salud e higiene", "Diversión", "Otros gastos"])
+            categoria_gastos = st.selectbox("Seleccione la categoría:", ["Alimentación", "Cuentas y pagos",
+                                                                        "Casa", "Transporte", "Ropa",
+                                                                        "Salud e higiene", "Diversión",
+                                                                        "Otros gastos"])
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
                 username = st.session_state.username
-                db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Gasto', 'Categoría': categoria_gastos, 'Monto': monto})
+                db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Gasto',
+                            'Categoría': categoria_gastos, 'Monto': monto})
                 st.success("Gasto registrado exitosamente.")
                 # Limpiar los campos después de registrar el gasto
                 fecha = ""
@@ -459,7 +465,8 @@ if get_current_user() is not None:
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
                 username = st.session_state.username
-                db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Ingreso', 'Categoría': categoria_ingresos, 'Monto': monto})
+                db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Ingreso'
+                            , 'Categoría': categoria_ingresos, 'Monto': monto})
                 st.success("Ingreso registrado exitosamente.")
 
     if menu_option == "Mostrar Gastos e Ingresos":
@@ -502,7 +509,8 @@ if get_current_user() is not None:
                 st.write(df_mem)
                 lista = fon_data[0]["members"].keys()
                 miem = st.selectbox('Seleccione el miembro', lista)
-                amount = st.number_input('Ingresa la cantidad que deseas añadir o retirar', min_value=1.0, step=1.0)
+                amount = st.number_input('Ingresa la cantidad que deseas añadir o retirar',
+                                        min_value=1.0, step=1.0)
                 description = st.text_input("Añada una descripción para el historial")
 
                 Users = Query()
@@ -567,19 +575,25 @@ else:
 
         # Enlace a videos de YouTube
         st.header("Ahorrar no es solo guardar, sino tambien, saber gastar")
-        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">Y para ti... ¿Qué es ahorrar?</h4>', unsafe_allow_html=True)
+        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight:\
+                bold; text-align: center;">Y para ti... ¿Qué es ahorrar?</h4>', unsafe_allow_html=True)
 
         st.video("https://www.youtube.com/watch?v=KDxhvehEius&ab_channel=MedallaMilagrosa")
 
-        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">Tan facil como jugar... es ahorrar</h4>', unsafe_allow_html=True)
+        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: \
+                bold; text-align: center;">Tan facil como jugar... es ahorrar</h4>', unsafe_allow_html=True)
 
         st.video("https://www.youtube.com/watch?v=gqtojhFaSlE&ab_channel=Bancolombia")
 
-        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">Y... ¿Sabes que es un ciclo economico?</h4>', unsafe_allow_html=True)
+        st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: \
+                bold; text-align: center;">Y... ¿Sabes que es un ciclo economico?</h4>', unsafe_allow_html=True)
 
-        st.video("https://www.youtube.com/watch?v=7jklUV3QE70&list=PLYV86yxR8Np89gAhNR8LTpSe7_QthTMHY&index=4&ab_channel=MedallaMilagrosa")
+        st.video("https://www.youtube.com/watch?v=7jklUV3QE70&list=PLYV86yxR8Np89gAhNR8LTpSe7_QthTMHY&\
+                index=4&ab_channel=MedallaMilagrosa")
 
-        st.write('<h2 style="font-size: 30px; color: #000000; font-family: cursive; font-weight: bold; text-align: center;">¡Prepara tu camino hacia un futuro financiero más sólido! Regístrate ahora.</h2>', unsafe_allow_html=True)
+        st.write('<h2 style="font-size: 30px; color: #000000; font-family: cursive; font-weight: bold; \
+                text-align: center;">¡Prepara tu camino hacia un futuro financiero más sólido! \
+                Regístrate ahora.</h2>', unsafe_allow_html=True)
     
     # Inicio de sesión
     elif menu_option == "Inicio de Sesion":
@@ -611,7 +625,8 @@ else:
                     nombre = user_info['first_name']
                     destinatario = email_recuperar  
                     asunto = 'Recuperacion de Contraseña'
-                    cuerpo = (f'Hola {nombre} ,  Te enviamos este correo para recordarte la contraseña\n\n Usuario : {username} \n\n Contraseña : {contraseña_recuperar}  ')
+                    cuerpo = (f'Hola {nombre} ,  Te enviamos este correo para recordarte la contraseña\n\n \
+                            Usuario : {username} \n\n Contraseña : {contraseña_recuperar}  ')
 
                     enviar_correo(destinatario, asunto, cuerpo)
                     st.success('Mensaje enviado con exito al correo registrado')
@@ -682,12 +697,17 @@ else:
 
         # Botón de registro de usuario en la primera columna
         if col1.button("Registrarse") and aceptar_politica and st.session_state.politica_vista:
-            registration_successful, message = registrar_usuario(new_username, new_password, first_name, last_name, email, confirm_password)
+            registration_successful, message = registrar_usuario(new_username, new_password, first_name,
+                                                                last_name, email, confirm_password)
             if registration_successful:
                 st.success(message)
                 destinatario = email  
                 asunto = 'Registro Exitoso Finanzapp'
-                cuerpo = (f'Hola {first_name} ,  Te damos la bienvenida a finanzapp\n Estamos muy felices de que estes con nostros, Ahora podras registrar tus gastos e ingresos, podras verificar graficos y mucho mas...\n Tu Usuario es: {new_username} \n Tu contrasena es: {new_password} \n Es un placer que estes con nostros, Recuerda que ahorrando con Finanzapp, te rinde mas el dinero... ')
+                cuerpo = (f'Hola {first_name} ,  Te damos la bienvenida a finanzapp\n Estamos muy felices\
+                        de que estes con nostros, Ahora podras registrar tus gastos e ingresos, podras verificar\
+                        graficos y mucho mas...\n Tu Usuario es: {new_username} \n Tu contrasena\
+                        es: {new_password} \n Es un placer que estes con nostros, Recuerda que ahorrando\
+                        con Finanzapp, te rinde mas el dinero... ')
 
                 enviar_correo(destinatario, asunto, cuerpo)
             else:
@@ -704,5 +724,7 @@ else:
         st.stop()
 
 # Botón acerca de nosotros esquina inferior derecha (Sebastian)
-st.markdown('<a class="popup-button" href="https://docs.google.com/document/d/e/2PACX-1vTNHzaSOTiy_uLe8uhSkzz12P_emSLGI7usf53F10noX3W-PfVVBK8PEXUizMSwi-zFPD1hEykVAxpZ/pub" target="_blank">Acerca de nosotros</a>',
+st.markdown('<a class="popup-button" href="https://docs.google.com/document/d/e/2PACX-1vTNHzaSOTiy_u\
+            Le8uhSkzz12P_emSLGI7usf53F10noX3W-PfVVBK8PEXUizMSwi-zFPD1hEykVAxpZ/pub" target="_blank">Acerca\
+            de nosotros</a>',
             unsafe_allow_html=True)
