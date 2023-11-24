@@ -2,3 +2,4 @@ matplotlib==3.4.3
 tinydb
 xlsxwriter
 deta
+streamlit==1.18.0
