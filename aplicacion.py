@@ -473,9 +473,16 @@ if get_current_user() is not None:
         crear_grafico_barras_categorias()
 
     if menu_option == "Eliminar gasto ó ingreso":
-        st.header("Seccion Para eliminacion de datos")
-        gas_ing = st.text_input = ("Ingrese la 'Key' del gasto o del ingreso:")
-
+        with st.form("eliminar"):
+            st.header("Seccion Para eliminacion de datos")
+            gas_ing = st.text_input("Ingrese la 'Key' del gasto o del ingreso:")
+            if st.form_submit_button("Eliminar Gasto o ingreso"):
+                esta = db_data.fetch({"key":gas_ing})
+                if esta.count>0:
+                    db_data.delete(gas_ing)
+                    st.success("Dato borrado con exito")
+                else:
+                    st.warning("Verifica la 'key' Ingresada" )
 
 
     if menu_option == "Crear Fondo Común":
