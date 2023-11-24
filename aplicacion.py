@@ -412,7 +412,7 @@ if get_current_user() is not None:
     menu_option = st.sidebar.selectbox("Menú", ["Pagina Principal", "Registrar Gasto",
                                                 "Registrar Ingreso", "Mostrar Gastos e Ingresos",
                                                 "Crear Fondo Común", "Fondos comunes","Eliminar gasto ó ingreso",
-                                                "Descargar Gastos e Ingresos","Calculadora de Préstamos",
+                                                "Descargar Gastos e Ingresos","Calculadora de Préstamos","Actualizar Datos",
                                                 "Cerrar Sesión"])
 else:
     # Sidebar menu options for non-logged-in users
@@ -563,7 +563,6 @@ if get_current_user() is not None:
                 else:
                     st.warning("Credenciales incorrectas")
 
-            
 
 
     elif menu_option == "Calculadora de Préstamos":
