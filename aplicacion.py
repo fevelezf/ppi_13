@@ -546,22 +546,26 @@ if get_current_user() is not None:
         descargar_datos_excel(df)
 
     elif menu_option == "Actualizar Datos":
-        with st.expander("contraseña"):
+        st.header("Seccion De actualizacion de datos")
+        with st.expander("Contraseña"):
             us = st.text_input("Nickname:")
             ps = st.text_input("Contraseña:", type="password")
             ps_new = st.text_input("Nueva Contraseña:", type="password")
+            ps_new_conf = st.text_input("Confirmar Nueva Contraseña:", type="password")
+            if ps_new == ps_new_conf:
+                if st.button("Cambiar contraseña"):
+                    login_successful, message = verificar_credenciales(us, ps)
+                    if login_successful:
+                        us_s = db_users.fetch({"username":us})
+                        itm = us_s.items[0]
+                        llave = itm.get("key")
+                        db_users.update({"password":ps_new},key=llave)
+                        st.success("Contraseña cambiada con exito")
 
-            if st.button("Cambiar contraseña"):
-                login_successful, message = verificar_credenciales(us, ps)
-                if login_successful:
-                    us_s = db_users.fetch({"username":us})
-                    itm = us_s.items[0]
-                    llave = itm.get("key")
-                    db_users.update({"password":ps_new},key=llave)
-                    st.success("Contraseña cambiada con exito")
-
-                else:
-                    st.warning("Credenciales incorrectas")
+                    else:
+                        st.warning("Credenciales incorrectas")
+            else:
+                st.warning("Las Contraseñas no coinciden")
 
 
 
