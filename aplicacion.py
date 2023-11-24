@@ -434,7 +434,7 @@ if get_current_user() is not None:
         display_user_summary(username)
 
     # Botones para registrar gasto, ingreso o ver registros
-    if menu_option == "Registrar Gasto":
+    elif menu_option == "Registrar Gasto":
         st.header("Registrar Gasto")
         with st.form("registrar_gasto_form"):
             fecha = st.date_input("Fecha del Gasto")
@@ -454,9 +454,8 @@ if get_current_user() is not None:
                 categoria_gastos = ""
                 monto = 0.0
 
-    # Establecer la opción del menú seleccionada en la variable de estado
-    st.session_state.option = ""
-    if menu_option == "Registrar Ingreso":
+    
+    elif menu_option == "Registrar Ingreso":
         st.header("Registrar Ingreso")
         with st.form("registrar_Ingreso_form"):
             fecha = st.date_input("Fecha del Ingreso")
@@ -468,11 +467,11 @@ if get_current_user() is not None:
                             , 'Categoría': categoria_ingresos, 'Monto': monto})
                 st.success("Ingreso registrado exitosamente.")
 
-    if menu_option == "Mostrar Gastos e Ingresos":
+    elif menu_option == "Mostrar Gastos e Ingresos":
         mostrar_gastos_ingresos()
         crear_grafico_barras_categorias()
 
-    if menu_option == "Eliminar gasto ó ingreso":
+    elif menu_option == "Eliminar gasto ó ingreso":
         st.header("Seccion Para eliminacion de datos")
         gas_ing = st.text_input("Ingrese la 'Key' del gasto o del ingreso:")
         if st.button("Eliminar Gasto o ingreso"):
@@ -484,7 +483,7 @@ if get_current_user() is not None:
                 st.warning("Verifica la 'key' Ingresada")
 
 
-    if menu_option == "Crear Fondo Común":
+    elif menu_option == "Crear Fondo Común":
         st.header("Crear Fondo Común")
         fon_name = st.text_input("Nombre del Fondo Común:")
         Members = st.text_input("Integrantes del fondo(Por favor separar cor\
@@ -493,7 +492,7 @@ if get_current_user() is not None:
             crear_fon_com(st.session_state.username, fon_name, Members)
             st.success("El fondo ha sido creado")
 
-    if menu_option == "Fondos comunes":
+    elif menu_option == "Fondos comunes":
         # Realizamos un query al sistema para verificar
         # si el usuario posee fondos comunes, de lo contrario
         # se saltara al else
@@ -540,14 +539,14 @@ if get_current_user() is not None:
             st.write("Aún no tienes un fondo común, \
                     anímate a crear uno")
 
-    if menu_option == "Descargar Gastos e Ingresos":
+    elif menu_option == "Descargar Gastos e Ingresos":
         st.header("Descarga Aca tus datos para tu gestion en Casa ¡Animate!")
         user_data = db_data.fetch({"username": st.session_state.username})
         df = pd.DataFrame(user_data.items)
         descargar_datos_excel(df)
 
 
-    if menu_option == "Calculadora de Préstamos":
+    elif menu_option == "Calculadora de Préstamos":
         st.write("Calculadora de Préstamos")
         
 
