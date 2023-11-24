@@ -233,7 +233,6 @@ def mostrar_gastos_ingresos():
     st.write(df)
     crear_grafico_barras_gastos_ingresos()
 
-    
 
 def crear_fon_com(usernam, fon_name, members):
     """La función obtiene como primer parametro el username
@@ -412,9 +411,9 @@ if get_current_user() is not None:
     # Sidebar menu options for logged-in users
     menu_option = st.sidebar.selectbox("Menú", ["Pagina Principal", "Registrar Gasto",
                                                 "Registrar Ingreso", "Mostrar Gastos e Ingresos",
-                                                "Crear Fondo Común", "Fondos comunes",
-                                                "Descargar Gastos e Ingresos", "Cerrar Sesión",
-                                                "Calculadora de Préstamos"])
+                                                "Crear Fondo Común", "Fondos comunes","Eliminar gasto ó ingreso",
+                                                "Descargar Gastos e Ingresos","Calculadora de Préstamos",
+                                                "Cerrar Sesión"])
 else:
     # Sidebar menu options for non-logged-in users
     menu_option = st.sidebar.selectbox("Menú", ["Inicio", "Inicio de Sesion", "Registro","Conversion de Moneda",
@@ -472,6 +471,17 @@ if get_current_user() is not None:
     if menu_option == "Mostrar Gastos e Ingresos":
         mostrar_gastos_ingresos()
         crear_grafico_barras_categorias()
+
+    if menu_option == "Eliminar gasto ó ingreso":
+        gas_ing = st.text_input = ("Ingrese la 'Key' del gasto o del ingreso")
+        if st.button("Eliminar Gato o ingreso"):
+            esta = db_data.fetch({"key":gas_ing})
+            if esta.count>0:
+                db_data.delete(gas_ing)
+                st.success("Dato borrado con exito")
+            else:
+                st.warning("Verifica la 'key' Ingresada" )
+
 
     if menu_option == "Crear Fondo Común":
         st.header("Crear Fondo Común")
