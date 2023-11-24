@@ -545,6 +545,26 @@ if get_current_user() is not None:
         df = pd.DataFrame(user_data.items)
         descargar_datos_excel(df)
 
+    elif menu_option == "Actualizar Datos":
+        with st.expander("contraseña"):
+            us = st.text_input("Nickname:")
+            ps = st.text_input("Contraseña:", type="password")
+            ps_new = st.text_input("Nueva Contraseña:", type="password")
+
+            if st.button("Cambiar contraseña"):
+                login_successful, message = verificar_credenciales(us, ps)
+                if login_successful:
+                    us_s = db_users.fetch({"username":us})
+                    itm = us_s.items[0]
+                    llave = itm.get("key")
+                    db_users.update({"password":ps_new})
+                    st.success("Contraseña cambiada con exito")
+
+                else:
+                    st.warning("Credenciales incorrectas")
+
+            
+
 
     elif menu_option == "Calculadora de Préstamos":
         st.write("Calculadora de Préstamos")
