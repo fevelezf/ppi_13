@@ -648,9 +648,8 @@ else:
         elif colum2.button("Olvidaste la contraseña"):
             try:
                 if username is not None:
-                    User = Query()
-                    user_info = db_users.get(User.username == username)
-
+                    busqueda = db_users.fetch({"username":username})
+                    user_info = busqueda.items[0]
                     email_recuperar = user_info['email']
                     contraseña_recuperar = user_info['password']
                     nombre = user_info['first_name']
