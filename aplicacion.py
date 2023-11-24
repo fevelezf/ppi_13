@@ -598,8 +598,7 @@ else:
         st.write('<h4 style="font-size: 26px; color: #000000; font-family: cursive; font-weight: \
                 bold; text-align: center;">Y... ¿Sabes que es un ciclo economico?</h4>', unsafe_allow_html=True)
 
-        st.video("https://www.youtube.com/watch?v=7jklUV3QE70&list=PLYV86yxR8Np89gAhNR8LTpSe7_QthTMHY&\
-                index=4&ab_channel=MedallaMilagrosa")
+        st.video("https://www.youtube.com/watch?v=7jklUV3QE70&list=PLYV86yxR8Np89gAhNR8LTpSe7_QthTMHY&index=4&ab_channel=MedallaMilagrosa")
 
         st.write('<h2 style="font-size: 30px; color: #000000; font-family: cursive; font-weight: bold; \
                 text-align: center;">¡Prepara tu camino hacia un futuro financiero más sólido! \
