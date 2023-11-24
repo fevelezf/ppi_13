@@ -473,9 +473,9 @@ if get_current_user() is not None:
         crear_grafico_barras_categorias()
 
     if menu_option == "Eliminar gasto ó ingreso":
-        st.header("Seccion Para eliminacion de datos")
-        gas_ing = st.text_input = ("Ingrese la 'Key' del gasto o del ingreso:")
-        if gas_ing is not None:
+        with st.form("eliminar"):
+            st.header("Seccion Para eliminacion de datos")
+            gas_ing = st.text_input = ("Ingrese la 'Key' del gasto o del ingreso:")
             if st.button("Eliminar Gasto o ingreso"):
                 esta = db_data.fetch({"key":gas_ing})
                 if esta.count>0:
