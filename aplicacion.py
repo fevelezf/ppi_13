@@ -557,7 +557,7 @@ if get_current_user() is not None:
                     us_s = db_users.fetch({"username":us})
                     itm = us_s.items[0]
                     llave = itm.get("key")
-                    db_users.update({"password":ps_new})
+                    db_users.update({"password":ps_new},key=llave)
                     st.success("Contraseña cambiada con exito")
 
                 else:
