@@ -83,31 +83,48 @@ def enviar_correo(destinatario, asunto, cuerpo):
     Usando servidores TTS para el envio de ellos , usando contraseña de aplicacion y el correo
     '''
 
-    #Puerto y Servidor
+    # Puerto y Servidor al que se conectará
+    # El servidor especificado es el servidor estandar
+    # de gmail utilizado para tareas como ésta,
+    # por otro lado el puerto no es el más utilizado
+    # pero es con el cual lo pudimos hacer funcionar
     smtp_server = 'smtp.gmail.com'
     smtp_port = 587
 
-    # Usuario y contraseña de correo
-    smtp_username = 'gerenciafinanzapp@gmail.com'  
-    smtp_password = 'ejla icim yzls rfpy'  
-    # Crear el mensaje MIME
+    # Usuario y contraseña de correo creado previamente,
+    # este utilizado como remitente para los correos
+    smtp_username = 'gerenciafinanzapp@gmail.com' 
+    # la clave es la proveída por google para tareas
+    # de automatización de correos 
+    smtp_password = 'ejla icim yzls rfpy'
+
+    # Crear el mensaje en MIME, estandar utilizado en
+    # correos, luego se rellenan los campos
+    # de información a usar en el correo
     msg = MIMEMultipart()
     msg['From'] = smtp_username
     msg['To'] = destinatario
     msg['Subject'] = asunto
 
     # Adjuntar el cuerpo del correo al mensaje con codificación UTF-8
+    # Y se arma el correo con la funcion attach
+    # pasandole los debidos parámetros
     body = cuerpo.encode('utf-8')
     msg.attach(MIMEText(body, 'plain', 'utf-8'))
 
+    # Se empaqueta el correo para ser enviado por la red
     context = ssl.create_default_context()
     try:
         # Iniciar conexión con el servidor SMTP de Gmail utilizando TLS
         with smtplib.SMTP(smtp_server, smtp_port) as server:
+            # Se establecen los parámetros de la conexión
+            # y se especifican las credenciales de login
             server.starttls(context=context)
             server.login(smtp_username, smtp_password)
             
             # Enviar el correo con el mensaje MIME como string
+            # pasando los parametros necesarios para enviar
+            # un correo convencional
             server.sendmail(smtp_username, destinatario, msg.as_string())
 
         st.success("Correo enviado con éxito")
@@ -120,6 +137,8 @@ def crear_grafico_barras_gastos_ingresos():
     '''Esta función realiza un gráfico de barras de la sumatoria
     de gastos e ingresos que haya tenido el usuario
     '''
+
+    # Obtener el usuario de la sesión
     username = st.session_state.username
     user_data = db_data.fetch({"username": username})
 
@@ -144,6 +163,7 @@ def crear_grafico_barras_gastos_ingresos():
 # Función para descargar los datos en formato Excel
 def descargar_datos_excel(df):
     '''Esta Funcion permite descargar los datos de cada usuario en un excel
+
     '''
 # Crear un buffer de BytesIO para escribir el archivo Excel
     output = BytesIO()
@@ -210,6 +230,7 @@ def verificar_credenciales(username, password):
     # Busca el usuario en la base de datos
     user = db_users.fetch({"username": username, "password": password})
     
+    # Imprime en pantalla el resultado de la verificación
     if user.count > 0:
         return True, "Inicio de sesión exitoso."
     else:
@@ -219,11 +240,17 @@ def verificar_credenciales(username, password):
 # Función para mostrar los gastos e ingresos del usuario actual
 def mostrar_gastos_ingresos():
     '''Esta función hace un filtrado en db_data según el usuario en ese momento y 
-    muestra los gastos e ingresos
+    muestra los gastos e ingresos, no necesita parámetros de entradas, ya que
+    ésta realiza todos los cálculos internamente
     '''
+
+    # Obtiene el usuariop de la sesión actual y consulta la base de datos
+    # filtrando por el usuario
     username = st.session_state.username
     User = Query()
     user_data = db_data.fetch({"username": username})
+    
+    # Imprime en pantalla los gastos e ingresos
     st.write(f"Gastos e Ingresos de {username}:")
 
     # Convierte los datos en un DataFrame de pandas
@@ -333,18 +360,29 @@ def upd_his_fon(fon_elegido , miem, amount, description):
 
 
 def calculate_amortization(interest_rate, months, loan_amount):
-    # Calculating the monthly interest rate
+    """La función recibe como parámetros las características
+    técnidas de un préstamo, para con ellas realizar los cálculos
+    de una tabla de amortización y retorna como primer valor el 
+    monto de la cuota mensual obtenida con los datos especificados
+    y como segundo valor la tabla de amortización
+    """
+    
+    # Calcula el interes de la amortización segun la tasa
     monthly_interest_rate = interest_rate / 12 / 100
     
-    # Calculating the monthly payment using the formula for an amortizing loan
+    # Calcular el pago mensualo usando la formula de amortización
+    # de un préstamo
     monthly_payment = (loan_amount * monthly_interest_rate) / (1 - (1 + monthly_interest_rate) ** -months)
     
-    # Creating a DataFrame for the amortization schedule
+
+    # Crear la tabla de amortización
     amortization_schedule = pd.DataFrame(
         columns=['Month','Payment', 'Principal',
                 'Interest', 'Remaining Balance'])
     remaining_balance = loan_amount
     
+    # Rellena la tabla de amortización calculando
+    # los valores a rellenar
     for month in range(1, months + 1):
         interest = remaining_balance * monthly_interest_rate
         principal = monthly_payment - interest
@@ -358,6 +396,7 @@ def calculate_amortization(interest_rate, months, loan_amount):
             'Remaining Balance': remaining_balance
         }, ignore_index=True)
 
+    # Se renombran las columnas
     amortization_schedule.rename({"Month": "Mes", "Payment": "Pago",
                                 "Pricipal": "Abono a deuda", "Interest": "Abono a interes",
                                 "remaining_balance": "Deuda actual"})
