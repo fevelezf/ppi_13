@@ -333,6 +333,11 @@ def upd_his_fon(fon_elegido , miem, amount, description):
 
 
 def calculate_amortization(interest_rate, months, loan_amount):
+    '''Esta funcion Calcula la amortizacion de un prestamo, segun 
+    la tasa de interes, los meses y el monto del prestamo,
+    mostrandole asi una tabla en la cual se visualiza el abono al capital,
+    Las cuotas, y cuanto va a quedando en el prestamo
+    '''
     # Calculating the monthly interest rate
     monthly_interest_rate = interest_rate / 12 / 100
     
@@ -454,7 +459,7 @@ if get_current_user() is not None:
                 categoria_gastos = ""
                 monto = 0.0
 
-    
+    #Botono para registrar ingreso
     elif menu_option == "Registrar Ingreso":
         st.header("Registrar Ingreso")
         with st.form("registrar_Ingreso_form"):
@@ -463,26 +468,31 @@ if get_current_user() is not None:
             monto = st.number_input("Ingrese el monto:")
             if st.form_submit_button("Registrar"):
                 username = st.session_state.username
+                #Añadir el dato a la database
                 db_data.put({'username': username, 'Fecha': str(fecha), 'Tipo': 'Ingreso'
                             , 'Categoría': categoria_ingresos, 'Monto': monto})
                 st.success("Ingreso registrado exitosamente.")
 
+    
     elif menu_option == "Mostrar Gastos e Ingresos":
         mostrar_gastos_ingresos()
         crear_grafico_barras_categorias()
 
+    #Elimina el gasto o el ingreso 
     elif menu_option == "Eliminar gasto ó ingreso":
         st.header("Seccion Para eliminacion de datos")
         gato_ingreso = st.text_input("Ingrese la 'Key' del gasto o del ingreso:")
         if st.button("Eliminar Gasto o ingreso"):
+            #Busca el gasto con la key
             esta = db_data.fetch({"key":gato_ingreso})
             if esta.count>0:
+                #Lo elimina de la database
                 db_data.delete(gato_ingreso)
                 st.success("Dato borrado con exito")
             else:
                 st.warning("Verifica la 'key' Ingresada")
 
-
+    #Creacion de fondos comunes
     elif menu_option == "Crear Fondo Común":
         st.header("Crear Fondo Común")
         fon_name = st.text_input("Nombre del Fondo Común:")
@@ -539,12 +549,15 @@ if get_current_user() is not None:
             st.write("Aún no tienes un fondo común, \
                     anímate a crear uno")
 
+    #Descarga los datos en un excel
     elif menu_option == "Descargar Gastos e Ingresos":
         st.header("Descarga Aca tus datos para tu gestion en Casa ¡Animate!")
+        #Busca los datos por username en la database
         user_data = db_data.fetch({"username": st.session_state.username})
         df = pd.DataFrame(user_data.items)
         descargar_datos_excel(df)
 
+    #Actualiza la contraseña del usuario
     elif menu_option == "Actualizar Datos":
         st.header("Seccion De actualizacion de datos")
         with st.expander("Contraseña"):
@@ -555,9 +568,11 @@ if get_current_user() is not None:
                 if st.button("Cambiar contraseña"):
                     login_successful, message = verificar_credenciales(username, ps)
                     if login_successful:
+                        #Busca por username en la databse
                         us_s = db_users.fetch({"username":username})
                         itm = us_s.items[0]
                         llave = itm.get("key")
+                        #Modifica el campo password en la database
                         db_users.update({"password":ps_new},key=llave)
                         st.success("Contraseña cambiada con exito")
 
@@ -566,12 +581,9 @@ if get_current_user() is not None:
             else:
                 st.warning("Las Contraseñas no coinciden")
 
-
-
+    #Calculo de prestamos
     elif menu_option == "Calculadora de Préstamos":
         st.write("Calculadora de Préstamos")
-        
-
         interest_rate = st.number_input('Tasa de interés anual (%)',
                                         min_value=0.01, value=5.0, step=0.01)
         months = st.number_input('Número de meses', min_value=1,
@@ -668,9 +680,7 @@ else:
                 else:
                     st.warning('Debes registrarte')
 
-
-            
-
+    #Realiza el calculo de los prestamos
     elif menu_option == "Calculadora de Préstamos":
         st.write("Calculadora de Préstamos")
         
@@ -695,6 +705,7 @@ else:
             st.subheader('Tabla de Amortización')
             st.write(amortization_table)
 
+    #Realiza el registro del usuairo
     elif menu_option == "Registro":
         st.write("Registro de Usuario")
 
